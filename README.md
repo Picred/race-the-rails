@@ -15,7 +15,7 @@
 ## API Server
 
 ### Login
-[POST] `/api/sessions` - Create a new session (login).
+[POST] `/api/sessions` - Create a new session (login). Returns user information + default routes +  
 
 Request body: A JSON object with username and password
   ```json
@@ -30,9 +30,20 @@ Response: `201 Created` (success), `401 Unauthorized` (invalid credentials).
 Response body: A JSON object containing the username and the related id.
   ```json
   {
-    "id": 1,
-    "username": "andrei",
-  }
+  "user": {
+    "id": 2,
+    "username": "andrei"
+  },
+  "routes": [
+    {
+      "line_name": "Linea Arancione",
+      "station_id": 3,
+      "station_name": "Qt8",
+      "stop_sequence": 1
+    },
+    ...
+  ]
+}
   ```
 
 ### Check if still logged in
@@ -102,35 +113,54 @@ Response body: A JSON object containing the list of the routes.
   ]
   ```
 
-### Send the builded route (TODO)
-[POST] `/api/routes` - Send the builded route by the user. 
+### Start the game and get game information
+[POST] `/api/games` - Create a new game.
 
+Request body: None
 
-Request body: A JSON object containing the selected route and the timer.
+Response: `201 Created` (success), `401 Unauthorized` (user not logged in), `500 Internal Server Error` (failure)
+
+Response body: A JSON object containing with the id of the game and the selected start and end stations.
   ```json
-  [
-    {
-      "line_name": "Linea Rossa",
-      "station_id": 5,
-      "station_name": "Centrale",
-      "stop_sequence": 2
-    },
-    {
-      "line_name": "Linea Rossa",
-      "station_id": 6,
-      "station_name": "QT8",
-      "stop_sequence": 3
-    },
-    ...
-  ]
+  {
+    "game_id": 43,
+    "start_station_id": 4,
+    "end_station_id": 1
+  }
   ```
 
-Response: `200 OK` (success), `401 Unauthorized` (user not logged in), `TODO` (start/end stations are different from the assigned one even if time is ended)
+
+### Send the builded route for validation
+[POST] `/api/games/:id/validate` - Send the builded route by the user. 
+
+
+Request body: A JSON object containing the selected route.
+  ```json
+  {
+    "selected_route": [1, 2, 3, 4]
+  }
+  ```
+
+Response: `200 OK` (success), `401 Unauthorized` (user not logged in), `403 Forbidden` (timeout)`500 Internal Server Error` (failure)
 
 Response body: A JSON object containing the list of the routes.
   ```json
   {
+    "game_is_valid": true,
     "final_coins": 4,
+    "routes": [
+      {
+        "line_name": "Linea Arancione",
+        "station_id": 3,
+        "station_name": "Qt8",
+        "stop_sequence": 1,
+        "event": { 
+          "event_name": "Sosta prolungata", 
+          "effect": -3
+        }
+      },
+      ...
+    ]
   }
   ```
 

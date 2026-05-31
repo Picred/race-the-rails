@@ -3,9 +3,9 @@ import morgan from "morgan";
 import cors from "cors";
 import passport from "passport";
 import LocalStrategy from "passport-local";
-import session from 'express-session';
+import session from "express-session";
 
-import { list_events, list_routes } from "./db/dao.js";
+import { list_events, list_routes, create_new_game } from "./db/dao.js";
 import { get_user } from "./db/dao.js";
 
 const server = express();
@@ -47,37 +47,44 @@ server.use(session({
     resave: false,
     saveUninitialized: false,
 }));
-server.use(passport.authenticate('session'));
+server.use(passport.authenticate("session"));
 
 
 const is_logged_in = (req, res, next) => {
     if (req.isAuthenticated())
         return next();
-    return res.status(401).json({ error: 'Not authorized' });
+    return res.status(401).json({ error: "Not authorized" });
 }
 
 
-server.post('/api/sessions', function (req, res, next) {
-    passport.authenticate('local', (err, user, info) => {
+server.post("/api/sessions", function (req, res, next) {
+    passport.authenticate("local", (err, user, info) => {
         if (err) return next(err);
-        if (!user) 
+        if (!user)
             return res.status(401).json({ error: info });
-        req.login(user, (err) => {
-            if (err) 
-                return next(err);
-            return res.status(201).json(req.user);
+        req.login(user, async (err) => {
+            try {
+                if (err)
+                    return next(err);
+
+                const all_routes = await list_routes();
+                return res.status(201).json({ user: req.user, routes: all_routes });
+            } catch (err) {
+                console.error("Error while fetching routes: " + err);
+                res.status(500).json({error: "Error while fetching routes:" + err})
+            }
         });
     })(req, res, next);
 });
 
-server.get('/api/sessions/current', (req, res) => {
+server.get("/api/sessions/current", (req, res) => {
     if (req.isAuthenticated())
         res.status(200).json(req.user);
     else
-        res.status(401).json({ error: 'Not authenticated' });
+        res.status(401).json({ error: "Not authenticated" });
 });
 
-server.delete('/api/sessions/current', (req, res) => {
+server.delete("/api/sessions/current", (req, res) => {
     req.logout(() => {
         res.end();
     });
@@ -85,6 +92,16 @@ server.delete('/api/sessions/current', (req, res) => {
 
 
 
+
+server.post("/api/games", is_logged_in, async (req, res) => {
+    try {
+        const created_game = await create_new_game(req.user.id);
+        res.status(201).json(created_game);
+    } catch (err) {
+        console.error(err);
+        res.status(500).end();
+    }
+});
 
 
 

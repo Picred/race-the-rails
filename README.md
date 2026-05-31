@@ -8,18 +8,140 @@
 - Route `/something/:param`: page content and purpose, param specification
 - ...
 
+
+
+
+
 ## API Server
 
-- POST `/api/something`
-  - request parameters and request body content
-  - response body content
-- GET `/api/something`
-  - request parameters
-  - response body content
-- POST `/api/something`
-  - request parameters and request body content
-  - response body content
-- ...
+### Login
+[POST] `/api/sessions` - Create a new session (login).
+
+Request body: A JSON object with username and password
+  ```json
+  {
+    "username" : "andrei",
+    "password" : "andreipsw"
+  }
+  ```
+
+Response: `201 Created` (success), `401 Unauthorized` (invalid credentials). 
+
+Response body: A JSON object containing the username and the related id.
+  ```json
+  {
+    "id": 1,
+    "username": "andrei",
+  }
+  ```
+
+### Check if still logged in
+[GET] `/api/sessions/current` - Check if the user is still logged in
+
+Request body: None
+
+Response: `200 OK` (success), `401 Unauthorized` (failure). 
+
+Response body: A JSON object containing the username and the related id.
+  ```json
+  {
+    "id" : 1,
+    "username": "andrei",
+  }
+  ```
+
+
+### Logout
+[DELETE] `/api/sessions/current` - Check if the user is still logged in
+Request body: None
+
+Response: `200 OK` (success) 
+
+Response body: None
+
+
+
+### List all the events
+[GET] `/api/events` - List the events for the gameplay.
+
+Request body: None
+
+Response: `200 OK` (success) 
+
+Response body: A JSON object containing the list of the events.
+  ```json
+  [
+    {
+      "event_id": 1,
+      "description": "Lorem ipsum",
+      "effect": -2
+    },
+    ...
+  ]
+  ```
+
+
+### List all the routes
+[GET] `/api/routes` - List all the routes.
+
+Request body: None
+
+Response: `200 OK` (success)
+
+Response body: A JSON object containing the list of the routes.
+  ```json
+  [
+    {
+      // "route_id": 1,
+      "line_name": "Linea Rossa",
+      "station_id": 5,
+      "station_name": "Centrale",
+      "stop_sequence": 2
+    },
+    ...
+  ]
+  ```
+
+### Send the builded route (TODO)
+[POST] `/api/routes` - Send the builded route by the user. 
+
+
+Request body: A JSON object containing the selected route and the timer.
+  ```json
+  [
+    {
+      "line_name": "Linea Rossa",
+      "station_id": 5,
+      "station_name": "Centrale",
+      "stop_sequence": 2
+    },
+    {
+      "line_name": "Linea Rossa",
+      "station_id": 6,
+      "station_name": "QT8",
+      "stop_sequence": 3
+    },
+    ...
+  ]
+  ```
+
+Response: `200 OK` (success), `something` (start/end stations are different from the assigned one even if time is ended)
+
+Response body: A JSON object containing the list of the routes.
+  ```json
+  {
+    "final_coins": 4,
+
+  }
+  ```
+
+
+
+
+
+
+
+
 
 ## Database Tables
 

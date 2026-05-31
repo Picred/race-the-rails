@@ -6,3 +6,9 @@ function LineStation(line_station_id = null, line_name, station_id, stop_sequenc
 };
 
 export { LineStation };
+
+function Route(){};
+
+function Event(){};
+
+function Station(){};

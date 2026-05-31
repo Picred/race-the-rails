@@ -1,14 +1,18 @@
-function LineStation(line_station_id = null, line_name, station_id, stop_sequence){
-    this.line_station_id = line_station_id,
+export function Route(line_name, station_id, station_name, stop_sequence) {
+    // this.route_id = route_id,
     this.line_name = line_name,
     this.station_id = station_id,
+    this.station_name = station_name,
     this.stop_sequence = stop_sequence
 };
 
-export { LineStation };
 
-function Route(){};
+export function Event(description, effect) {
+    this.description = description;
+    this.effect = effect
+};
 
-function Event(){};
 
-function Station(){};
+export function Station(station_name) {
+    this.station_name = station_name;
+};

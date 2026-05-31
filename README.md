@@ -1,6 +1,6 @@
 [![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/iZes9Qfg)
-# Exam #N: "Exam Title"
-## Student: s123456 LASTNAME FIRSTNAME 
+# Exam #1: "Ultima Corsa"
+## Student: s356980 STEFAN ANDREI DANIEL 
 
 ## React Client Application Routes
 
@@ -40,7 +40,7 @@ Response body: A JSON object containing the username and the related id.
 
 Request body: None
 
-Response: `200 OK` (success), `401 Unauthorized` (failure). 
+Response: `200 OK` (success), `401 Unauthorized` (Not authenticated). 
 
 Response body: A JSON object containing the username and the related id.
   ```json
@@ -52,7 +52,7 @@ Response body: A JSON object containing the username and the related id.
 
 
 ### Logout
-[DELETE] `/api/sessions/current` - Check if the user is still logged in
+[DELETE] `/api/sessions/current` - Delete the current session (logout)
 Request body: None
 
 Response: `200 OK` (success) 
@@ -66,13 +66,13 @@ Response body: None
 
 Request body: None
 
-Response: `200 OK` (success) 
+Response: `200 OK` (success), `401 Unauthorized` (user not logged in)
 
 Response body: A JSON object containing the list of the events.
   ```json
   [
     {
-      "event_id": 1,
+      // "event_id": 1,
       "description": "Lorem ipsum",
       "effect": -2
     },
@@ -86,7 +86,7 @@ Response body: A JSON object containing the list of the events.
 
 Request body: None
 
-Response: `200 OK` (success)
+Response: `200 OK` (success), `500 Internal Server Error` (failure), `401 Unauthorized` (user not logged in)
 
 Response body: A JSON object containing the list of the routes.
   ```json
@@ -125,13 +125,12 @@ Request body: A JSON object containing the selected route and the timer.
   ]
   ```
 
-Response: `200 OK` (success), `something` (start/end stations are different from the assigned one even if time is ended)
+Response: `200 OK` (success), `401 Unauthorized` (user not logged in), `TODO` (start/end stations are different from the assigned one even if time is ended)
 
 Response body: A JSON object containing the list of the routes.
   ```json
   {
     "final_coins": 4,
-
   }
   ```
 

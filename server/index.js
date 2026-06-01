@@ -57,25 +57,15 @@ const is_logged_in = (req, res, next) => {
 }
 
 
-server.post("/api/sessions", function (req, res, next) {
-    passport.authenticate("local", (err, user, info) => {
-        if (err) return next(err);
-        if (!user)
-            return res.status(401).json({ error: info });
-        req.login(user, async (err) => {
-            try {
-                if (err)
-                    return next(err);
-
-                const all_routes = await list_routes();
-                return res.status(201).json({ user: req.user, routes: all_routes });
-            } catch (err) {
-                console.error("Error while fetching routes: " + err);
-                res.status(500).json({error: "Error while fetching routes:" + err})
-            }
-        });
-    })(req, res, next);
-});
+server.post("/api/sessions", passport.authenticate("local"), async (req, res) => {
+    try {
+        const all_routes = await list_routes();
+        return res.status(201).json({ user: req.user, routes: all_routes });
+    } catch (err) {
+        console.error("Error while fetching routes: " + err);
+        res.status(500).json({error: "Error while fetching routes:" + err})
+    }
+}); 
 
 server.get("/api/sessions/current", (req, res) => {
     if (req.isAuthenticated())

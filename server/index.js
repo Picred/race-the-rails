@@ -4,6 +4,7 @@ import cors from "cors";
 import passport from "passport";
 import LocalStrategy from "passport-local";
 import session from "express-session";
+import { check, validationResult } from "express-validator";
 
 import { 
     get_user, 
@@ -37,15 +38,14 @@ passport.use(new LocalStrategy(async function verify(username, password, callbac
 }));
 
 
-passport.serializeUser(function (user, callback) { // this user is id + username
+passport.serializeUser(function (user, callback) { // id + username settati su get_user()
     callback(null, user);
 });
 
 
-passport.deserializeUser(function (user, callback) { // this user is id + username
+passport.deserializeUser(function (user, callback) { // id + username settati su get_user()
     return callback(null, user);
 });
-
 
 
 server.use(session({
@@ -73,6 +73,7 @@ server.post("/api/sessions", passport.authenticate("local"), async (req, res) =>
     }
 }); 
 
+
 server.get("/api/sessions/current", (req, res) => {
     if (req.isAuthenticated())
         res.status(200).json(req.user);
@@ -80,13 +81,12 @@ server.get("/api/sessions/current", (req, res) => {
         res.status(401).json({ error: "Not authenticated" });
 });
 
+
 server.delete("/api/sessions/current", (req, res) => {
     req.logout(() => {
         res.end();
     });
 });
-
-
 
 
 server.post("/api/games", is_logged_in, async (req, res) => {
@@ -99,28 +99,23 @@ server.post("/api/games", is_logged_in, async (req, res) => {
     }
 });
 
-server.post("/api/games/:id/validate", is_logged_in, async (req, res) => {
+
+server.post("/api/games/:id/validate", is_logged_in, [
+    check("path").notEmpty()
+], async (req, res) => {
+    const errors = validationResult(req);
+    if(!errors.isEmpty())
+        return res.status(422).json({errors: errors.array()});
+
+    const game_id = req.params.id;
     try{
-        const game_id = req.params.id;
         const game_data = await validate_game(game_id, req.body.path);
         res.json(game_data);
     }catch(err){
-        console.error("validation error: " + err);
+        console.error("validation error: " + err.message);
         res.status(err.error_code).json({error: err.message});
     }
 });
-
-
-
-// server.get("/api/events", is_logged_in, async (req, res) => {
-//     try {
-//         const events = await list_events();
-//         res.json(events);
-//     } catch (err) {
-//         console.error(err);
-//         res.status(500).end();
-//     }
-// });
 
 
 server.get("/api/routes", async (req, res) => {
@@ -134,19 +129,16 @@ server.get("/api/routes", async (req, res) => {
 });
 
 
-server.get("/api/leaderboard", is_logged_in, async (req, res) => {
+server.get("/api/games/leaderboard", is_logged_in, async (req, res) => {
     try{
         const leaderboard = await get_leaderboard_per_user();
-        if(leaderboard.is_empty())
-            return res.json({message: "Ancora non ci sono partite concluse."})
-            
         return res.json(leaderboard);
 
     }catch(err){
         console.error(err);
         res.status(500).json({error: err});
     }
-})
+});
 
 
 server.listen(port, () => {

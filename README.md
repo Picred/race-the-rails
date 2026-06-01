@@ -30,21 +30,28 @@ Response: `201 Created` (success), `401 Unauthorized` (invalid credentials).
 Response body: A JSON object containing the username and the related id.
   ```json
   {
-  "user": {
-    "id": 2,
-    "username": "andrei"
-  },
-  "routes": [
-    {
-      "line_name": "Linea Arancione",
-      "station_id": 3,
-      "station_name": "Qt8",
-      "stop_sequence": 1
+    "user": {
+      "id": 2,
+      "username": "andrei"
     },
-    ...
-  ]
-}
+    "routes": [
+      {
+        "line_name": "Linea Arancione",
+        "station_id": 3,
+        "station_name": "Qt8",
+        "stop_sequence": 1
+      },
+      {
+        "line_name": "Linea Blu",
+        "station_id": 7,
+        "station_name": "Nesima",
+        "stop_sequence": 4
+      }
+    ]
+  }
   ```
+
+
 
 ### Check if still logged in
 [GET] `/api/sessions/current` - Check if the user is still logged in
@@ -62,6 +69,7 @@ Response body: A JSON object containing the username and the related id.
   ```
 
 
+
 ### Logout
 [DELETE] `/api/sessions/current` - Delete the current session (logout)
 Request body: None
@@ -72,8 +80,7 @@ Response body: None
 
 
 
-
-### List all the routes
+### List all the routes (TODO: remove?)
 [GET] `/api/routes` - List all the routes.
 
 Request body: None
@@ -84,15 +91,20 @@ Response body: A JSON object containing the list of the routes.
   ```json
   [
     {
-      // "route_id": 1,
       "line_name": "Linea Rossa",
       "station_id": 5,
       "station_name": "Centrale",
       "stop_sequence": 2
     },
-    ...
+    {
+      "line_name": "Linea Blu",
+      "station_id": 7,
+      "station_name": "Nesima",
+      "stop_sequence": 4
+    },
   ]
   ```
+
 
 ### Start the game and get game information
 [POST] `/api/games` - Create a new game.
@@ -112,7 +124,7 @@ Response body: A JSON object containing with the id of the game and the selected
 
 
 ### Send the planned route for validation
-[POST] `/api/games/:id/validate` - Send the planned route by the user. 
+[POST] `/api/games/:id/validate` - Send the planned route by the user.
 
 Request body: A JSON object containing the selected route.
   ```json
@@ -121,24 +133,48 @@ Request body: A JSON object containing the selected route.
   }
   ```
 
-Response: `200 OK` (success), `401 Unauthorized` (user not logged in), `403 Forbidden` (timeout) `500 Internal Server Error` (failure), `400 Bad Request` (start/end stations aren't the same), `404 Not Found` (if start time doesn't exists)
+Response: `200 OK` (success), `401 Unauthorized` (user not logged in), `403 Forbidden` (timeout) `500 Internal Server Error` (failure), `400 Bad Request` (start/end stations aren't the same), `404 Not Found` (if start time doesn't exists on database), `422 Unprocessable entity` (if `path` is not specified)
 
 Response body: A JSON object containing the list associated events and final coins.
   ```json
   {
-  "final_coins": 1,
-  "events": [
-    {
-      "description": "Porte che continuano a riaprirsi",
-      "effect": -1
-    },
-    ...
-  ]
+    "final_coins": 1,
+    "events": [
+      {
+        "description": "Porte che continuano a riaprirsi",
+        "effect": -1
+      },
+      {
+        "description": "Vagone vuoto",
+        "effect": 3
+      },
+    ]
   }
   ```
 
 
+### Get the leaderboard
+[POST] `/api/games/leaderboard` - Retrieve the leaderboard with top scores of users.
 
+Request body: None
+
+Response: `200 OK` (success), `401 Unauthorized` (user not logged in), `500 Internal Server Error` (failure)
+
+Response body: A JSON object containing the leaderbord (if exists) or object with empty array (if there aren't played games).
+  ```json
+  {
+    "entries": [
+      {
+        "username": "alice",
+        "score": 18
+      },
+      {
+        "username": "andrei",
+        "score": 17
+      }
+    ]
+  }
+  ```
 
 
 

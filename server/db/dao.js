@@ -176,23 +176,24 @@ export const create_new_game = async (user_id) => {
     };
 }
 
-const get_start_time_by_game_id = async (game_id) => {
+const get_game_by_id = async (game_id) => {
     return new Promise((resolve, reject) => {
         const sql = "SELECT * FROM games WHERE game_id = ?;";
         db.get(sql, [game_id], (err, row) => {
             if (err) reject(err);
-            else if (row === undefined) resolve({}); // TODO: resolve(????)
-            else{ 
-                // console.log(row);
-                resolve({
-                    game_id: row.game_id,
-                    user_id: row.user_id,
-                    score: row.score,
-                    start_time: row.start_time,
-                    start_station_id: row.start_station_id,
-                    end_station_id: row.end_station_id
-                });
-            }
+            else resolve(row);
+            
+            // else if (row === undefined) resolve(undefined);
+            // else{ 
+            //     resolve({
+            //         game_id: row.game_id,
+            //         user_id: row.user_id,
+            //         score: row.score,
+            //         start_time: row.start_time,
+            //         start_station_id: row.start_station_id,
+            //         end_station_id: row.end_station_id
+            //     });
+            // }
         });
     });
 }
@@ -213,10 +214,10 @@ export const validate_game = async (game_id, path) => {
     //check path lentgh >=5 (start, 3stations, end)
     if(path.length  < 5) throw new HttpError(400, "Percorso troppo breve. Servono almeno 3 stazioni tra partenza e arrivo.");
     
-    // check time
+    // check game_id
     const actual_time = dayjs();
-    const game_row = await get_start_time_by_game_id(game_id);
-    if (!game_row) throw new HttpError(404 ,"Start time non trovato!");
+    const game_row = await get_game_by_id(game_id);
+    if (!game_row) throw new HttpError(404 ,"Partita non trovata!");
 
     const start_time = dayjs(game_row.start_time);
     const time_shift_seconds = calculate_timeshift_seconds(start_time, actual_time);

@@ -72,25 +72,6 @@ Response body: None
 
 
 
-### List all the events
-[GET] `/api/events` - List the events for the gameplay.
-
-Request body: None
-
-Response: `200 OK` (success), `401 Unauthorized` (user not logged in)
-
-Response body: A JSON object containing the list of the events.
-  ```json
-  [
-    {
-      // "event_id": 1,
-      "description": "Lorem ipsum",
-      "effect": -2
-    },
-    ...
-  ]
-  ```
-
 
 ### List all the routes
 [GET] `/api/routes` - List all the routes.
@@ -130,37 +111,29 @@ Response body: A JSON object containing with the id of the game and the selected
   ```
 
 
-### Send the builded route for validation
-[POST] `/api/games/:id/validate` - Send the builded route by the user. 
-
+### Send the planned route for validation
+[POST] `/api/games/:id/validate` - Send the planned route by the user. 
 
 Request body: A JSON object containing the selected route.
   ```json
   {
-    "selected_route": [1, 2, 3, 4]
+    "path": [1, 2, 3, 4]
   }
   ```
 
-Response: `200 OK` (success), `401 Unauthorized` (user not logged in), `403 Forbidden` (timeout)`500 Internal Server Error` (failure)
+Response: `200 OK` (success), `401 Unauthorized` (user not logged in), `403 Forbidden` (timeout) `500 Internal Server Error` (failure), `400 Bad Request` (start/end stations aren't the same), `404 Not Found` (if start time doesn't exists)
 
-Response body: A JSON object containing the list of the routes.
+Response body: A JSON object containing the list associated events and final coins.
   ```json
   {
-    "game_is_valid": true,
-    "final_coins": 4,
-    "routes": [
-      {
-        "line_name": "Linea Arancione",
-        "station_id": 3,
-        "station_name": "Qt8",
-        "stop_sequence": 1,
-        "event": { 
-          "event_name": "Sosta prolungata", 
-          "effect": -3
-        }
-      },
-      ...
-    ]
+  "final_coins": 1,
+  "events": [
+    {
+      "description": "Porte che continuano a riaprirsi",
+      "effect": -1
+    },
+    ...
+  ]
   }
   ```
 

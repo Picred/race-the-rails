@@ -5,8 +5,7 @@ import passport from "passport";
 import LocalStrategy from "passport-local";
 import session from "express-session";
 
-import { list_events, list_routes, create_new_game } from "./db/dao.js";
-import { get_user } from "./db/dao.js";
+import { get_user, list_events, list_routes, create_new_game, validate_game } from "./db/dao.js";
 
 const server = express();
 const port = 3001;
@@ -89,22 +88,32 @@ server.post("/api/games", is_logged_in, async (req, res) => {
         res.status(201).json(created_game);
     } catch (err) {
         console.error(err);
-        res.status(500).end();
+        res.status(500).json({error: err});
+    }
+});
+
+server.post("/api/games/:id/validate", is_logged_in, async (req, res) => {
+    try{
+        const game_id = req.params.id;
+        const game_data = await validate_game(game_id, req.body.path);
+        res.json(game_data);
+    }catch(err){
+        console.error("validation error: " + err);
+        res.status(err.error_code).json({error: err.message});
     }
 });
 
 
 
-
-server.get("/api/events", is_logged_in, async (req, res) => {
-    try {
-        const events = await list_events();
-        res.json(events);
-    } catch (err) {
-        console.error(err);
-        res.status(500).end();
-    }
-});
+// server.get("/api/events", is_logged_in, async (req, res) => {
+//     try {
+//         const events = await list_events();
+//         res.json(events);
+//     } catch (err) {
+//         console.error(err);
+//         res.status(500).end();
+//     }
+// });
 
 
 server.get("/api/routes", async (req, res) => {

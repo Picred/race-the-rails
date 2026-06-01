@@ -8,10 +8,6 @@ Content-Type: application/json
 }
 ###
 
-# List all the events
-GET http://localhost:3001/api/events
-###
-
 # Get current session
 GET http://localhost:3001/api/sessions/current
 ###
@@ -22,4 +18,14 @@ DELETE http://localhost:3001/api/sessions/current
 
 # Create new game
 POST http://localhost:3001/api/games
+###
+
+
+# Validate game/selected path.
+POST http://localhost:3001/api/games/1/validate
+Content-Type: application/json
+
+{
+  "path": [12, 9, 5, 6, 4, 1, 2]
+}
 ###

@@ -2,7 +2,14 @@ import sqlite from "sqlite3";
 import crypto from "crypto";
 import dayjs from "dayjs";
 
-import { Route, Event, Station } from "../models.js";
+import { Route, Event, Station, Game, HttpError } from "../models.js";
+import { 
+    calculate_timeshift_seconds, 
+    validate_start_end_stations, 
+    validate_route_selected,
+    get_n_random_events,
+    calculate_final_coins
+ } from "../utils/utils.js";
 
 
 const db = new sqlite.Database("./db/rails.sqlite", async (err) => {
@@ -151,16 +158,16 @@ export const create_new_game = async (user_id) => {
 
     // insert game in table + Date now
     let created_game_id;
-    try{
+    // try{
         created_game_id = await insert_new_game(
             user_id, dayjs().toISOString(), 
             random_start_route_step.station_id, 
             random_end_route_step.station_id
         );
-    }catch(err){
-        console.error("created_game_id: " + err);
-        throw err;
-    }
+    // }catch(err){
+    //     console.error("created_game_id: " + err);
+    //     throw err;
+    // }
 
     return {
         game_id: created_game_id, 
@@ -168,3 +175,81 @@ export const create_new_game = async (user_id) => {
         random_end_station_id: random_end_route_step.station_id
     };
 }
+
+const get_start_time_by_game_id = async (game_id) => {
+    return new Promise((resolve, reject) => {
+        const sql = "SELECT * FROM games WHERE game_id = ?;";
+        db.get(sql, [game_id], (err, row) => {
+            if (err) reject(err);
+            else if (row === undefined) resolve({}); // TODO: resolve(????)
+            else{ 
+                // console.log(row);
+                resolve({
+                    game_id: row.game_id,
+                    user_id: row.user_id,
+                    score: row.score,
+                    start_time: row.start_time,
+                    start_station_id: row.start_station_id,
+                    end_station_id: row.end_station_id
+                });
+            }
+        });
+    });
+}
+
+const end_game_by_id = async (game_id, final_coins) => {
+    return new Promise((resolve, reject) => {
+        const sql = "UPDATE games SET score = ? WHERE game_id = ?;";
+        db.run(sql, [final_coins, game_id], function(err) {
+            if (err) reject(err);
+            else resolve();
+        });
+    });
+}
+
+
+
+export const validate_game = async (game_id, path) => {
+    //check path lentgh >=5 (start, 3stations, end)
+    if(path.length  < 5) throw new HttpError(400, "Percorso troppo breve. Servono almeno 3 stazioni tra partenza e arrivo.");
+    
+    // check time
+    const actual_time = dayjs();
+    const game_row = await get_start_time_by_game_id(game_id);
+    if (!game_row) throw new HttpError(404 ,"Start time non trovato!");
+
+    const start_time = dayjs(game_row.start_time);
+    const time_shift_seconds = calculate_timeshift_seconds(start_time, actual_time);
+    if (time_shift_seconds > 90) throw new HttpError(403, "Tempo scaduto!"); // TODO: to uncomment in prod
+
+    // TODO: DEBUG
+    // if (!time_shift_seconds > 90) throw new HttpError(403, "Tempo scaduto!");
+    
+    // check start/end stations
+    const start_station_id = Number(game_row.start_station_id);
+    const end_station_id = Number(game_row.end_station_id);
+    const stations_are_valid = validate_start_end_stations(path, start_station_id, end_station_id);
+    if(!stations_are_valid) throw new HttpError(400, "Stazione di partenza o di arrivo non combaciano.");
+
+
+    // check path is valid (start_station to end_station is reachable)
+    const all_routes = await list_routes();
+    const route_selected_is_valid = validate_route_selected(all_routes, path);
+    if(!route_selected_is_valid) throw new HttpError(400, "Sequenza di tratte selezionato non valido. Verifica gli interscambi.");
+
+
+    // associate random events to single stations - event[i] <-> path[i]
+    const number_of_events = path.length;
+    const all_events = await list_events();
+    const events_selected = get_n_random_events(all_events, number_of_events);
+
+    // calculate final coins
+    const final_coins = calculate_final_coins(events_selected);
+
+
+    // insert new data in db if is higher than older score
+
+    await end_game_by_id(game_id, final_coins);
+
+    return new Game(final_coins, events_selected);
+};

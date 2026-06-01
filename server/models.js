@@ -27,3 +27,9 @@ export function HttpError(error_code, message){
     this.error_code = error_code,
     this.message = message
 }
+
+export function Leaderboard(entries = []){
+    this.entries = entries;
+
+    this.is_empty = () => entries.length === 0
+}

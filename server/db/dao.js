@@ -2,7 +2,7 @@ import sqlite from "sqlite3";
 import crypto from "crypto";
 import dayjs from "dayjs";
 
-import { Route, Event, Station, Game, HttpError } from "../models.js";
+import { Route, Event, Station, Game, HttpError, Leaderboard } from "../models.js";
 import { 
     calculate_timeshift_seconds, 
     validate_start_end_stations, 
@@ -197,10 +197,10 @@ const get_start_time_by_game_id = async (game_id) => {
     });
 }
 
-const end_game_by_id = async (game_id, final_coins) => {
+const end_game_by_id = async (game_id, user_id, final_coins) => {
     return new Promise((resolve, reject) => {
-        const sql = "UPDATE games SET score = ? WHERE game_id = ?;";
-        db.run(sql, [final_coins, game_id], function(err) {
+        const sql = "UPDATE games SET score = ? WHERE game_id = ? AND user_id = ?;";
+        db.run(sql, [final_coins, game_id, user_id], function(err) {
             if (err) reject(err);
             else resolve();
         });
@@ -223,7 +223,7 @@ export const validate_game = async (game_id, path) => {
     if (time_shift_seconds > 90) throw new HttpError(408, "Tempo scaduto!"); // TODO: to uncomment in prod
 
     // TODO: DEBUG
-    // if (!time_shift_seconds > 90) throw new HttpError(403, "Tempo scaduto!");
+    // if (!time_shift_seconds > 90) throw new HttpError(408, "Tempo scaduto!");
     
     // check start/end stations
     const start_station_id = Number(game_row.start_station_id);
@@ -249,7 +249,35 @@ export const validate_game = async (game_id, path) => {
 
     // insert new data in db if is higher than older score
 
-    await end_game_by_id(game_id, final_coins);
+    await end_game_by_id(game_id, game_row.user_id, final_coins);
 
     return new Game(final_coins, events_selected);
 };
+
+
+export const get_leaderboard_per_user = async () => {
+    return new Promise((resolve, reject) => {
+        const sql = `
+            SELECT u.username, MAX(g.score) AS score
+            FROM games g
+            JOIN users u ON g.user_id = u.user_id
+            GROUP BY u.user_id
+            ORDER BY g.score DESC;
+        `;
+
+        db.all(sql, [], (err, rows) => {
+            if (err) throw err;
+            else{
+                resolve(new Leaderboard(rows));
+            }
+        });
+    });
+}
+
+
+// try{
+//     const leaderboard = await get_leaderboard_per_user();
+//     console.log(leaderboard.is_empty());
+// }catch(err){
+//     console.error(err);
+// }

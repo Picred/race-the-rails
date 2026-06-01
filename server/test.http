@@ -3,8 +3,8 @@ POST http://localhost:3001/api/sessions
 Content-Type: application/json
 
 {
-  "username": "andrei",
-  "password": "andreipsw"
+  "username": "alice",
+  "password": "alicepsw"
 }
 ###
 
@@ -21,11 +21,24 @@ POST http://localhost:3001/api/games
 ###
 
 
-# Validate game/selected path.
+# Validate game/selected path. GAME 1 Solution andrei
 POST http://localhost:3001/api/games/1/validate
 Content-Type: application/json
 
 {
   "path": [12, 9, 5, 6, 4, 1, 2]
 }
+###
+
+
+# Validate game/selected path. GAME 6 Solution alice
+POST http://localhost:3001/api/games/6/validate
+Content-Type: application/json
+
+{
+  "path": [12, 9, 5, 7, 3]
+}
+###
+
+GET http://localhost:3001/api/leaderboard
 ###

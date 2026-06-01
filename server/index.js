@@ -5,7 +5,14 @@ import passport from "passport";
 import LocalStrategy from "passport-local";
 import session from "express-session";
 
-import { get_user, list_events, list_routes, create_new_game, validate_game } from "./db/dao.js";
+import { 
+    get_user, 
+    list_events, 
+    list_routes, 
+    create_new_game, 
+    validate_game,
+    get_leaderboard_per_user
+} from "./db/dao.js";
 
 const server = express();
 const port = 3001;
@@ -126,6 +133,20 @@ server.get("/api/routes", async (req, res) => {
     }
 });
 
+
+server.get("/api/leaderboard", is_logged_in, async (req, res) => {
+    try{
+        const leaderboard = await get_leaderboard_per_user();
+        if(leaderboard.is_empty())
+            return res.json({message: "Ancora non ci sono partite concluse."})
+            
+        return res.json(leaderboard);
+
+    }catch(err){
+        console.error(err);
+        res.status(500).json({error: err});
+    }
+})
 
 
 server.listen(port, () => {

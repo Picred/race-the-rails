@@ -220,7 +220,7 @@ export const validate_game = async (game_id, path) => {
 
     const start_time = dayjs(game_row.start_time);
     const time_shift_seconds = calculate_timeshift_seconds(start_time, actual_time);
-    if (time_shift_seconds > 90) throw new HttpError(403, "Tempo scaduto!"); // TODO: to uncomment in prod
+    if (time_shift_seconds > 90) throw new HttpError(408, "Tempo scaduto!"); // TODO: to uncomment in prod
 
     // TODO: DEBUG
     // if (!time_shift_seconds > 90) throw new HttpError(403, "Tempo scaduto!");

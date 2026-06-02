@@ -1,12 +1,15 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { ButtonGroup, Col, Row, ToggleButton, ListGroup, Stack, Button } from "react-bootstrap";
 import { Link, useNavigate } from "react-router";
+
+import { UserContext } from "../context/UserContext.js";
 import { Instructions } from "./Instructions.jsx";
+
 
 
 export const Sidebar = (props) => {
     const navigate = useNavigate();
-
+    const { user } = useContext(UserContext);
 
     return (
         <ListGroup variant="flush" className="vh-100 border-end border-secondary bg-dark text-white">
@@ -23,7 +26,7 @@ export const Sidebar = (props) => {
                 <Instructions />
             </ListGroup.Item>
 
-            {false ?
+            {user ?
                 <ListGroup.Item className="bg-body text-body border-secondary fw-bold" action onClick={() => navigate("/games/leaderboard")}>
                     <span className="btn btn-danger w-100 fs-5 fw-bold fst-italic p-2 m-1">Classifica generale</span>
                 </ListGroup.Item> :

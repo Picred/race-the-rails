@@ -22,9 +22,9 @@ server.use(morgan("dev"));
 
 const cors_options = {
     origin: "http://localhost:5173",
-    credentials: true
-    // optionsSuccessState: 200,
-    // exposedHeaders: ["WWW-Authenticate"],
+    credentials: true,
+    optionsSuccessState: 200,
+    exposedHeaders: ["WWW-Authenticate"]
 };
 server.use(cors(cors_options));
 

@@ -9,8 +9,9 @@ import {
     validate_route_selected,
     get_n_random_events,
     calculate_final_coins
- } from "../utils/utils.js";
+} from "../utils/utils.js";
 
+const START_COINS = 20;
 
 const db = new sqlite.Database("./db/rails.sqlite", async (err) => {
     if (err) throw err;
@@ -121,7 +122,7 @@ const get_random_end_route_step = (all_routes, random_start_route_step) => {
 
     const valid_end_stations = all_routes.filter((route) => {
         const distance = distances[route.station_id];
-        return distance !== undefined && distance >3;
+        return distance !== undefined && distance >= 3;
     });
 
     let random_index = Math.floor(Math.random() * valid_end_stations.length);
@@ -158,16 +159,11 @@ export const create_new_game = async (user_id) => {
 
     // insert game in table + Date now
     let created_game_id;
-    // try{
         created_game_id = await insert_new_game(
             user_id, dayjs().toISOString(), 
             random_start_route_step.station_id, 
             random_end_route_step.station_id
         );
-    // }catch(err){
-    //     console.error("created_game_id: " + err);
-    //     throw err;
-    // }
 
     return {
         game_id: created_game_id, 
@@ -182,18 +178,6 @@ const get_game_by_id = async (game_id) => {
         db.get(sql, [game_id], (err, row) => {
             if (err) reject(err);
             else resolve(row);
-            
-            // else if (row === undefined) resolve(undefined);
-            // else{ 
-            //     resolve({
-            //         game_id: row.game_id,
-            //         user_id: row.user_id,
-            //         score: row.score,
-            //         start_time: row.start_time,
-            //         start_station_id: row.start_station_id,
-            //         end_station_id: row.end_station_id
-            //     });
-            // }
         });
     });
 }
@@ -211,8 +195,8 @@ const end_game_by_id = async (game_id, user_id, final_coins) => {
 
 
 export const validate_game = async (game_id, path) => {
-    //check path lentgh >=5 (start, 3stations, end)
-    if(path.length  < 5) throw new HttpError(400, "Percorso troppo breve. Servono almeno 3 stazioni tra partenza e arrivo.");
+    //check path lentgh >=5 (start, 2stations, 1end)
+    if(path.length  < 4) throw new HttpError(400, "Percorso troppo breve. Servono almeno 3 tratte totali.");
     
     // check game_id
     const actual_time = dayjs();
@@ -245,7 +229,8 @@ export const validate_game = async (game_id, path) => {
     const events_selected = get_n_random_events(all_events, number_of_events);
 
     // calculate final coins
-    const final_coins = calculate_final_coins(events_selected);
+    let final_coins = calculate_final_coins(events_selected);
+    final_coins += START_COINS;
 
 
     // insert new data in db if is higher than older score

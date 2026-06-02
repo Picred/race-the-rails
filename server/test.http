@@ -21,22 +21,13 @@ POST http://localhost:3001/api/games
 ###
 
 
-# Validate game/selected path. GAME 1 Solution andrei
-POST http://localhost:3001/api/games/1/validate
+
+# Validate game/selected path.
+POST http://localhost:3001/api/games/8/validate
 Content-Type: application/json
 
 {
-  "path": [12, 9, 5, 6, 4, 1, 2]
-}
-###
-
-
-# Validate game/selected path. GAME 6 Solution alice
-POST http://localhost:3001/api/games/6/validate
-Content-Type: application/json
-
-{
-  "path": [12, 9, 5, 7, 3]
+  "path": [1, 4, 9, 11]
 }
 ###
 

@@ -183,9 +183,11 @@ Response body: A JSON object containing the leaderbord (if exists) or object wit
 
 ## Database Tables
 
-- Table `users` - contains xx yy zz
-- Table `something` - contains ww qq ss
-- ...
+- Table `events` - contains the list of all possible events with their effect.
+- Table `games` - contains the history of all games (score, start time, start/end stations) by any user who starts a game.
+- Table `routes` - contains default routes with line name, station id and a stop sequence in a specific line.
+- Table `stations` - contains the list of all available stations. 
+- Table `users` - contains the list of registered users and their credentials.
 
 ## Main React Components
 
@@ -201,8 +203,10 @@ Response body: A JSON object containing the leaderbord (if exists) or object wit
 
 ## Users Credentials
 
-- username, password (plus any other requested info)
-- username, password (plus any other requested info)
+- andrei, andreipsw TODO(plus any other requested info)
+- claudia, claudiapsw TODO(plus any other requested info)
+- alice, alicepsw TODO(plus any other requested info)
+- antonella, antonellapsw TODO(plus any other requested info)
 
 ## Use of AI Tools
 Briefly describe whether you used any AI tools (e.g., ChatGPT, GitHub Copilot, Claude) while working on this project, for which purposes (e.g., clarifying concepts, debugging, generating code), and how you verified or adapted their output.

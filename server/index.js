@@ -69,7 +69,8 @@ server.post("/api/sessions", passport.authenticate("local"), async (req, res) =>
         return res.status(201).json({ user: req.user, routes: all_routes });
     } catch (err) {
         console.error("Error while fetching routes: " + err);
-        res.status(500).json({error: "Error while fetching routes:" + err})
+        res.status(500).end();
+        // res.status(500).json({error: "Error while fetching routes:" + err})
     }
 }); 
 

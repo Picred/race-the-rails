@@ -135,7 +135,7 @@ const get_random_end_route_step = (all_routes, random_start_route_step) => {
 const insert_new_game = async (user_id, start_time, start_station_id, end_station_id) => {
     return new Promise((resolve, reject) => {
         const sql = "INSERT INTO games(user_id, score, start_time, start_station_id, end_station_id) VALUES (?, ?, ?, ?, ?);"
-        db.run(sql, [user_id, 0, start_time, start_station_id, end_station_id], function (err) {
+        db.run(sql, [user_id, null, start_time, start_station_id, end_station_id], function (err) {
             if(err) reject(err);
             else resolve(this.lastID);
         });
@@ -151,7 +151,7 @@ export const create_new_game = async (user_id) => {
     let random_start_route_step;
     let random_end_route_step;
 
-    do{ // a volte la start station non ha stazioni a distanza > 3
+    do{ // a volte la end station non ha stazioni a distanza >= 3
         random_index = Math.floor(Math.random() * routes.length);
         random_start_route_step = routes[random_index];
         random_end_route_step = get_random_end_route_step(routes, random_start_route_step);
@@ -248,12 +248,13 @@ export const get_leaderboard_per_user = async () => {
             SELECT u.username, MAX(g.score) AS score
             FROM games g
             JOIN users u ON g.user_id = u.user_id
+            WHERE score != NULL
             GROUP BY u.user_id
             ORDER BY g.score DESC;
         `;
 
         db.all(sql, [], (err, rows) => {
-            if (err) throw err;
+            if (err) reject(err);
             else{
                 resolve(new Leaderboard(rows));
             }

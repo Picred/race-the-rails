@@ -12,14 +12,14 @@ export const validate_start_end_stations = (path, start_station_id, end_station_
 
 
 const exists_single_step_in_routes = (all_routes, start_step, next_step) => {
-    const start_stations = all_routes.filter((route) => route.station_id === start_step);
-    const next_stations = all_routes.filter((route) => route.station_id === next_step);
+    const start_stations = all_routes.filter((route) => route.station_id === start_step); // tutte le linee che hanno station_id == start_step
+    const next_stations = all_routes.filter((route) => route.station_id === next_step); // idem qua come sopra ma con next
 
     for (const start of start_stations){
         for(const next of next_stations){
             if(start.line_name === next.line_name){
                 const distance = Math.abs(start.stop_sequence - next.stop_sequence);
-                if(distance === 1)
+                if(distance === 1) // se si allora è di interscambio
                     return true;
             }
         }
@@ -38,11 +38,11 @@ export const validate_route_selected = (all_routes, path) => {
 }
 
 
-export const get_n_random_events = (all_events, number_of_events) => {
+export const get_n_random_events = (all_events, number_of_random_events) => {
     const selected_events = [];
-
-    for (let i=0; i<number_of_events; i++){
-        const random_index = Math.floor(Math.random()*number_of_events);
+    
+    for (let i=0; i<number_of_random_events; i++){
+        const random_index = Math.floor(Math.random()*all_events.length);
         selected_events.push(all_events[random_index]);
     }
 

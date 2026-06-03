@@ -130,7 +130,7 @@ server.get("/api/routes", is_logged_in, async (req, res) => {
 });
 
 
-server.get("/api/games/leaderboard", is_logged_in, async (req, res) => {
+server.get("/api/leaderboard", is_logged_in, async (req, res) => {
     try{
         const leaderboard = await get_leaderboard_per_user();
         return res.json(leaderboard);

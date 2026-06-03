@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, Modal, ListGroup } from "react-bootstrap";
+import { Button, Modal, ListGroup, Stack } from "react-bootstrap";
 
 export const Instructions = (props) => {
     const [show_instrutions, set_show_instructions] = useState(false);
@@ -17,6 +17,8 @@ export const Instructions = (props) => {
                 <Modal.Header closeButton>
                     <Modal.Title>Regole del gioco</Modal.Title>
                 </Modal.Header>
+
+
                 <Modal.Body>
                     <ListGroup>
                         <ListGroup.Item>
@@ -24,39 +26,41 @@ export const Instructions = (props) => {
                         </ListGroup.Item>
 
                         <ListGroup.Item>
-                            <span className="fw-bold text-danger">1. Setup</span>: 
+                            <span className="fw-bold text-danger">1. Setup</span>:
                             Studia le linee nella mappa e le loro connessioni prima di partire.
                         </ListGroup.Item>
 
 
                         <ListGroup.Item>
-                            <span className="fw-bold text-warning">2. Pianificazione</span>: 
+                            <span className="fw-bold text-warning">2. Pianificazione</span>:
                             Ricevi due stazioni (partenza e arrivo) casuali distanti almeno 3 tratte tra loro.
                         </ListGroup.Item>
 
                         <ListGroup.Item>
-                            <span className="fw-bold text-danger">3. Timer (90s)</span>: 
+                            <span className="fw-bold text-danger">3. Timer (90s)</span>:
                             Hai 90 secondi per costruire la migliore tratta in sequenza. Se il tempo scade, il percorso si invia automaticamente.
                         </ListGroup.Item>
 
                         <ListGroup.Item>
                             <span className="fw-bold text-warning">4. Vincoli</span>:
-                            Puoi cambiare linea solo nelle stazioni di interscambio. 
+                            Puoi cambiare linea solo nelle stazioni di interscambio.
                             Ogni tratta è monouso.
                         </ListGroup.Item>
 
                         <ListGroup.Item>
-                            <span className="fw-bold text-danger">5. Viaggio</span>: 
+                            <span className="fw-bold text-danger">5. Viaggio</span>:
                             Se il percorso pianificato è valido, ogni tappa attiva un evento casuale da <span className="fw-bold text-danger">-4 a +4 monete</span>. Se è errato, totalizzi <span className="fw-bold text-danger">0</span>.
                         </ListGroup.Item>
                     </ListGroup>
-
                 </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="danger" onClick={handle_close_instructions}>
-                        Chiudi
-                    </Button>
 
+
+                <Modal.Footer className="d-block">
+                    <Stack direction="horizontal" className="justify-content-center">
+                        <Button variant="danger" onClick={handle_close_instructions}>
+                            Chiudi
+                        </Button>
+                    </Stack>
                 </Modal.Footer>
             </Modal>
         </>

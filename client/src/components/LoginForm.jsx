@@ -1,6 +1,7 @@
 import { Form, Button, Stack, Card, Spinner } from "react-bootstrap";
 import { useContext, useState } from "react";
 import { UserContext } from "../context/UserContext.js"
+import { USER_API } from "../API/user_api.js";
 
 export const LoginForm = () => {
     const [username, set_username] = useState("");
@@ -9,12 +10,23 @@ export const LoginForm = () => {
 
     const [is_loading, set_is_loading] = useState(false);
 
-    const handlesubmit = (event) => {
+    const handlesubmit = async (event) => {
         event.preventDefault();
 
         set_is_loading(true);
 
+        // login tramite API
 
+        // if risposta non valida?: errori
+        // set_is_loading(false);
+        // set_username("");
+        // set_password("");
+        // mostra errore
+
+        // --------------------------
+
+
+        // else risposta valida:
         // set_user({server_repsonse.user_id, server_repsonse.username})
         // set_routes(server_repsonse)
 
@@ -25,7 +37,7 @@ export const LoginForm = () => {
 
 
     return (
-        <Stack direction="vercital" className="h-100 justify-content-center align-items-center bg-dark">
+        <Stack direction="vercital" className="h-100 justify-content-center align-items-center">
             <Card className="p-5">
                 <Card.Body>
                     <h3 className="text-center fw-bold">Login!</h3>

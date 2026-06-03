@@ -4,7 +4,6 @@ const BASE_URL = "http://localhost:3001";
 // login
 const login = async (credentials) => {
     try {
-
         const response = await fetch(BASE_URL + "/api/sessions", {
             method: "POST",
             headers: {

@@ -4,7 +4,7 @@ import { useContext, useEffect } from "react";
 import { Instructions } from "../components/Instructions.jsx";
 import { UserContext } from "../context/UserContext.js";
 
-export const Homepage = () => {
+export const Homepage = (props) => {
     const { user } = useContext(UserContext);
 
 
@@ -25,7 +25,9 @@ export const Homepage = () => {
                     </Stack>
                 </Stack>
                 :
-                <p>Loggato</p>
+                props.routes && props.routes.map(route =>
+                    <p key={route.route_id}>{route.line_name}</p>
+                )
             }
 
         </>

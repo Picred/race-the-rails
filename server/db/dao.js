@@ -79,8 +79,9 @@ export const list_routes = async () => {
             if (err) reject(err);
             else if (rows.length === 0) resolve([]);
             else {
-                const routes = rows.map((row) => new Route(row.line_name, row.station_id, row.station_name, row.stop_sequence));
+                const routes = rows.map((row) => new Route(row.route_id, row.line_name, row.station_id, row.station_name, row.stop_sequence));
                 return resolve(routes);
+
             }
         });
     });

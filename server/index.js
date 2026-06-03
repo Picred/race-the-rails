@@ -119,13 +119,13 @@ server.post("/api/games/:id/validate", is_logged_in, [
 });
 
 
-server.get("/api/routes", async (req, res) => {
+server.get("/api/routes", is_logged_in, async (req, res) => {
     try {
         const routes = await list_routes();
         res.json(routes);
     } catch (err) {
         console.error(err);
-        res.status(500).end();
+        res.status(500).end({error: err.message});
     }
 });
 

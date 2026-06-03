@@ -1,5 +1,5 @@
-export function Route(line_name, station_id, station_name, stop_sequence) {
-    // this.route_id = route_id,
+export function Route(route_id, line_name, station_id, station_name, stop_sequence) {
+    this.route_id = route_id,
     this.line_name = line_name,
     this.station_id = station_id,
     this.station_name = station_name,

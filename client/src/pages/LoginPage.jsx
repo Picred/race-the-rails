@@ -1,10 +1,12 @@
 import { Form, Button, Stack, Card, Spinner } from "react-bootstrap";
 import { useContext, useState } from "react";
-import { UserContext } from "../context/UserContext.js"
-import { USER_API } from "../API/user_api.js";
 import { useNavigate } from "react-router";
+import { UserContext } from "../context/UserContext.js"
 
-export const LoginForm = () => {
+import { USER_API } from "../API/user_api.js";
+import { GAME_API } from "../API/game_api.js";
+
+export const LoginPage = (props) => {
     const [username, set_username] = useState("");
     const [password, set_password] = useState("");
     const { set_user } = useContext(UserContext);
@@ -20,17 +22,28 @@ export const LoginForm = () => {
         set_is_loading(true);
         set_notification("");
 
-        const user_info = await USER_API.login({ username: username, password: password })
+        const user_data = await USER_API.login({ username: username, password: password })
+
         // login tramite API
-        if (user_info.error) {
-            set_notification(user_info.error)
-        }
-        else {
-            set_user({ user_id: user_info.user_id, username: user_info.username })
-            // set_routes(user_info.routes)
-            navigate("/");
+        if (user_data.error) {
+            set_notification(user_data.error)
+            return;
         }
 
+        set_user({ user_id: user_data.user_id, username: user_data.username })
+
+        // get routes
+        const all_routes_data = await GAME_API.list_routes();
+        if (all_routes_data.error) {
+            set_notification(all_routes_data.error)
+            return;
+        }
+
+        // SUCCESS
+        props.set_routes(all_routes_data);
+        // all_routes_data.map(route => console.log(route));
+        navigate("/");
+        
         set_username("");
         set_password("");
         set_is_loading(false);

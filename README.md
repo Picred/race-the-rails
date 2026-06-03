@@ -203,10 +203,10 @@ Response body: A JSON object containing the leaderbord (if exists) or object wit
 
 ## Users Credentials
 
-- andrei, andreipsw TODO(plus any other requested info)
-- claudia, claudiapsw TODO(plus any other requested info)
-- alice, alicepsw TODO(plus any other requested info)
-- antonella, antonellapsw TODO(plus any other requested info)
+- andrei.stefan@polito.it, andreipsw TODO(plus any other requested info)
+- claudia.romano@polito.it, claudiapsw TODO(plus any other requested info)
+- alice.russo@polito.it, alicepsw TODO(plus any other requested info)
+- antonella.ferrari@polito.it, antonellapsw TODO(plus any other requested info)
 
 ## Use of AI Tools
 Briefly describe whether you used any AI tools (e.g., ChatGPT, GitHub Copilot, Claude) while working on this project, for which purposes (e.g., clarifying concepts, debugging, generating code), and how you verified or adapted their output.

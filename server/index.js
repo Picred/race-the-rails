@@ -65,8 +65,8 @@ const is_logged_in = (req, res, next) => {
 
 server.post("/api/sessions", passport.authenticate("local"), async (req, res) => {
     try {
-        const all_routes = await list_routes();
-        return res.status(201).json({ user: req.user, routes: all_routes });
+        // const all_routes = await list_routes();
+        return res.status(201).json({username: req.user.username});
     } catch (err) {
         console.error("Error while fetching routes: " + err);
         res.status(500).end();

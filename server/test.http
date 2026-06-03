@@ -3,7 +3,7 @@ POST http://localhost:3001/api/sessions
 Content-Type: application/json
 
 {
-  "username": "alice",
+  "username": "alice.russo@polito.it",
   "password": "alicepsw"
 }
 ###

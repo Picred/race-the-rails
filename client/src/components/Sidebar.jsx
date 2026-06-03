@@ -4,12 +4,19 @@ import { Link, useNavigate } from "react-router";
 
 import { UserContext } from "../context/UserContext.js";
 import { Instructions } from "./Instructions.jsx";
+import { USER_API } from "../API/user_api.js";
 
 
 
 export const Sidebar = (props) => {
     const navigate = useNavigate();
-    const { user } = useContext(UserContext);
+    const { user, set_user } = useContext(UserContext);
+
+    const handle_logout = (e) => {
+        e.preventDefault();
+        USER_API.logout();
+        set_user("");
+    };
 
     return (
         <ListGroup variant="flush" className="vh-100 border-end border-secondary bg-dark text-white">
@@ -26,9 +33,10 @@ export const Sidebar = (props) => {
                 <Instructions />
             </ListGroup.Item>
 
-            {user ?
-                <ListGroup.Item className="bg-body text-body border-secondary fw-bold" action onClick={() => navigate("/games/leaderboard")}>
-                    <span className="btn btn-danger w-100 fs-5 fw-bold fst-italic p-2 m-1">Classifica generale</span>
+            {user ? 
+                <ListGroup.Item className="bg-body text-body border-secondary fw-bold">
+                    <Button className="btn-danger w-100 fs-5 fw-bold fst-italic p-2 m-1" onClick={() => navigate("/games/leaderboard")}>Classifica generale</Button>
+                    <Link onClick={(e) => handle_logout(e)}><LogoutIcon/></Link>
                 </ListGroup.Item> :
 
                 <ListGroup.Item className="bg-body text-body border-secondary fw-bold disabled" action onClick={() => navigate("/games/leaderboard")}>
@@ -55,5 +63,11 @@ const RailroadSign = () => {
 const KeyIcon = () => {
     return (
         <i className="bi bi-person-lock"></i>
+    );
+}
+
+const LogoutIcon = () => {
+    return (
+        <i className="bi bi-box-arrow-left text-warning display-6 mt-2"></i>
     );
 }

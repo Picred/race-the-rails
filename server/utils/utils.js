@@ -1,11 +1,15 @@
+const NETWORK_DELAY = 500;
+
 export const calculate_timeshift_seconds = (start_time, actual_time) => {
-    return (actual_time.diff(start_time)) / 1000;
+    return (actual_time.diff(start_time) - NETWORK_DELAY) / 1000;
 }
+
 
 export const validate_start_end_stations = (path, start_station_id, end_station_id) => {
     const len = path.length;
     return path[0] === start_station_id && path[len-1] === end_station_id;
 }
+
 
 const exists_single_step_in_routes = (all_routes, start_step, next_step) => {
     const start_stations = all_routes.filter((route) => route.station_id === start_step);
@@ -23,6 +27,7 @@ const exists_single_step_in_routes = (all_routes, start_step, next_step) => {
     return false;
 }
 
+
 export const validate_route_selected = (all_routes, path) => {
     for (let i = 1; i < path.length; i++){
         const is_valid_step = exists_single_step_in_routes(all_routes, path[i-1], path[i]);
@@ -31,6 +36,7 @@ export const validate_route_selected = (all_routes, path) => {
     }
     return true;
 }
+
 
 export const get_n_random_events = (all_events, number_of_events) => {
     const selected_events = [];
@@ -42,6 +48,7 @@ export const get_n_random_events = (all_events, number_of_events) => {
 
     return selected_events;
 }
+
 
 export const calculate_final_coins = (selected_events) => {
     const initial_value = 0;

@@ -18,11 +18,11 @@ const login = async (credentials) => {
         }
         else {
             const error_message = response.headers.get("WWW-Authenticate");
-            return {error: error_message};
+            return { error: error_message };
 
         }
-    }catch (err){
-        return {error: "Errore di connessione con il server"};
+    } catch (err) {
+        return { error: "Errore di connessione con il server" };
 
     }
 }
@@ -30,9 +30,12 @@ const login = async (credentials) => {
 
 //logout
 const logout = async () => {
-
+    await fetch(`${BASE_URL}/sessions/current`, {
+        method: "DELETE",
+        credentials: "include"
+    });
 }
 
 
 
-export const USER_API = { login };
+export const USER_API = { login, logout };

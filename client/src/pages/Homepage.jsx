@@ -1,11 +1,13 @@
 import { Button, Container, Stack } from "react-bootstrap"
 import { Link } from "react-router"
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { Instructions } from "../components/Instructions.jsx";
 import { UserContext } from "../context/UserContext.js";
 
 export const Homepage = () => {
     const { user } = useContext(UserContext);
+
+
     return (
         <>
             {!user ?

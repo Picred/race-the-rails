@@ -185,7 +185,7 @@ const run_insert_user = async (query, params) => {
 }
 
 const insert_users = async () => {
-    const usernames = ["alice", "andrei", "antonella", "claudia"];
+    const usernames = ["alice.russo@polito.it", "andrei.stefan@polito.it", "antonella.ferrari@polito.it", "claudia.romano@polito.it"];
     const passwords = ["alicepsw", "andreipsw", "antonellapsw", "claudiapsw"];
     const salts = ["0fe16f155b1ec26c", "c19978b665a7ff7b", "5f8fb817e306aba1", "2d5ad9dc12be4c66"];
     const hashed_psws = ["a4bda2b2cf9d64b344fdb6df2d2da36c", "b3c8d806204d5494ee65f2afa054b39c", "beded4028cb56158e0a916f5c29ad5e2", "363bd82c1c1b59b9037fb258bec0ab69"]

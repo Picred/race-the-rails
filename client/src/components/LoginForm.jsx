@@ -48,11 +48,11 @@ export const LoginForm = () => {
 
                     <Form onSubmit={(e) => handlesubmit(e)}>
                         <Form.Group className="mb-3" controlId="formGroupEmail">
-                            <Form.Label>Username</Form.Label>
+                            <Form.Label>Username/Email</Form.Label>
                             <Form.Control
-                                type="text"
-                                minLength={2}
-                                maxLength={20}
+                                type="email"
+                                minLength={4}
+                                maxLength={50}
                                 placeholder="Inserisci username"
                                 value={username}
                                 onChange={event => set_username(event.target.value)}

@@ -1,10 +1,10 @@
-const BASE_URL = "http://localhost:3001";
+const BASE_URL = "http://localhost:3001/api";
 
 
 // login
 const login = async (credentials) => {
     try {
-        const response = await fetch(BASE_URL + "/api/sessions", {
+        const response = await fetch(`${BASE_URL}/sessions`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -13,15 +13,17 @@ const login = async (credentials) => {
             body: JSON.stringify(credentials),
         });
         if (response.ok) {
-            const user = await response.json();
-            return user;
+            const user_data = await response.json();
+            return user_data;
         }
         else {
             const error_message = response.headers.get("WWW-Authenticate");
-            throw error_message;
+            return {error: error_message};
+
         }
     }catch (err){
-        console.log(err);
+        return {error: err};
+
     }
 }
 

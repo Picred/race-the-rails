@@ -15,8 +15,10 @@ export const LoginForm = () => {
 
         set_is_loading(true);
 
+        const user_info = await USER_API.login({username: username, password: password})
         // login tramite API
-
+        if(user_info.error) console.log("ERRORE: " + user_info.error);
+        
         // if risposta non valida?: errori
         // set_is_loading(false);
         // set_username("");

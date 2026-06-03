@@ -32,7 +32,7 @@ server.use(cors(cors_options));
 passport.use(new LocalStrategy(async function verify(username, password, callback) {
     const user = await get_user(username, password)
     if (!user)
-        return callback(null, false, "Incorrect credentials");
+        return callback(null, false, "Credenziali non corrette");
 
     return callback(null, user);
 }));

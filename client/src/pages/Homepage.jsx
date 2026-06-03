@@ -1,26 +1,33 @@
 import { Button, Container, Stack } from "react-bootstrap"
 import { Link } from "react-router"
+import { useContext } from "react";
 import { Instructions } from "../components/Instructions.jsx";
+import { UserContext } from "../context/UserContext.js";
 
 export const Homepage = () => {
+    const { user } = useContext(UserContext);
     return (
+        <>
+            {!user ?
+                <Stack direction="vertical" className="h-100 w-100 justify-content-center align-items-center" gap={4} >
+                    <h1 className="display-3 text-body fw-bold">
+                        <TrainIcon />
+                        Ultima Corsa
+                    </h1>
 
-        <Stack direction="vertical" className="h-100 w-100 justify-content-center align-items-center" gap={4} >
-            <h1 className="display-3 text-body fw-bold">
-                <TrainIcon />
-                Ultima Corsa
-            </h1>
+                    <Stack direction="horizontal" gap={2} className="justify-content-center">
+                        <Link to="/login" className="btn btn-danger btn-lg fs-5 fw-bold fst-italic p-3">
+                            <PersonIcon />
+                            Login
+                        </Link>
+                    </Stack>
+                </Stack>
+                :
+                <p>Loggato</p>
+            }
 
-            <Stack direction="horizontal" gap={2} className="justify-content-center">
-                <Link to="/login" className="btn btn-danger btn-lg fs-5 fw-bold fst-italic p-3">
-                <PersonIcon/>
-                Login
-                </Link>
-            </Stack>
-
-        </Stack>
-
-    )
+        </>
+    );
 }
 
 export const TrainIcon = () => {

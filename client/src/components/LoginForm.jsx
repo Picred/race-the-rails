@@ -2,6 +2,7 @@ import { Form, Button, Stack, Card, Spinner } from "react-bootstrap";
 import { useContext, useState } from "react";
 import { UserContext } from "../context/UserContext.js"
 import { USER_API } from "../API/user_api.js";
+import { useNavigate } from "react-router";
 
 export const LoginForm = () => {
     const [username, set_username] = useState("");
@@ -9,32 +10,30 @@ export const LoginForm = () => {
     const { set_user } = useContext(UserContext);
 
     const [is_loading, set_is_loading] = useState(false);
+    const [notification, set_notification] = useState("");
+    const navigate = useNavigate();
+
 
     const handlesubmit = async (event) => {
         event.preventDefault();
 
         set_is_loading(true);
+        set_notification("");
 
-        const user_info = await USER_API.login({username: username, password: password})
+        const user_info = await USER_API.login({ username: username, password: password })
         // login tramite API
-        if(user_info.error) console.log("ERRORE: " + user_info.error);
-        
-        // if risposta non valida?: errori
-        // set_is_loading(false);
-        // set_username("");
-        // set_password("");
-        // mostra errore
+        if (user_info.error) {
+            set_notification(user_info.error)
+        }
+        else {
+            set_user({ user_id: user_info.user_id, username: user_info.username })
+            // set_routes(user_info.routes)
+            navigate("/");
+        }
 
-        // --------------------------
-
-
-        // else risposta valida:
-        // set_user({server_repsonse.user_id, server_repsonse.username})
-        // set_routes(server_repsonse)
-
-        //navigate("");
-
-        // set_is_loading(false);
+        set_username("");
+        set_password("");
+        set_is_loading(false);
     }
 
 
@@ -43,7 +42,9 @@ export const LoginForm = () => {
             <Card className="p-5">
                 <Card.Body>
                     <h3 className="text-center fw-bold">Login!</h3>
-                    <p>Inserisci le tue credenziali per sbloccare il gioco intero!</p>
+                    {notification && <p className="rounded p-1 my-4 border text-center fs-5 text- bg-body-secondary">{notification}!</p>}
+
+                    <p >Inserisci le tue credenziali per sbloccare il gioco intero!</p>
 
                     <Form onSubmit={(e) => handlesubmit(e)}>
                         <Form.Group className="mb-3" controlId="formGroupEmail">

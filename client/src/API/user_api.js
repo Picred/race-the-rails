@@ -22,7 +22,7 @@ const login = async (credentials) => {
 
         }
     }catch (err){
-        return {error: err};
+        return {error: "Errore di connessione con il server"};
 
     }
 }

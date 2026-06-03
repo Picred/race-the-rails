@@ -35,11 +35,11 @@ export const Sidebar = (props) => {
 
             {user ? 
                 <ListGroup.Item className="bg-body text-body border-secondary fw-bold">
-                    <Button className="btn-danger w-100 fs-5 fw-bold fst-italic p-2 m-1" onClick={() => navigate("/games/leaderboard")}>Classifica generale</Button>
+                    <Button className="btn-danger w-100 fs-5 fw-bold fst-italic p-2 m-1" onClick={() => navigate("/leaderboard")}>Classifica generale</Button>
                     <Link onClick={(e) => handle_logout(e)}><LogoutIcon/></Link>
                 </ListGroup.Item> :
 
-                <ListGroup.Item className="bg-body text-body border-secondary fw-bold disabled" action onClick={() => navigate("/games/leaderboard")}>
+                <ListGroup.Item className="bg-body text-body border-secondary fw-bold disabled">
                     <span className="btn btn-danger disabled w-100 fs-5 fw-bold fst-italic p-2 m-1">
                         Classifica generale
                         <KeyIcon />

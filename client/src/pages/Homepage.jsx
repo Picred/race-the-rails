@@ -3,6 +3,7 @@ import { Link } from "react-router"
 import { useContext, useEffect } from "react";
 import { Instructions } from "../components/Instructions.jsx";
 import { UserContext } from "../context/UserContext.js";
+import { GameplayPage } from "./GameplayPage.jsx";
 
 export const Homepage = (props) => {
     const { user } = useContext(UserContext);
@@ -10,7 +11,7 @@ export const Homepage = (props) => {
 
     return (
         <>
-            {!user ?
+            {!user &&
                 <Stack direction="vertical" className="h-100 w-100 justify-content-center align-items-center" gap={4} >
                     <h1 className="display-3 text-body fw-bold">
                         <TrainIcon />
@@ -24,12 +25,7 @@ export const Homepage = (props) => {
                         </Link>
                     </Stack>
                 </Stack>
-                :
-                props.routes && props.routes.map(route =>
-                    <p key={route.route_id}>{route.line_name}</p>
-                )
             }
-
         </>
     );
 }

@@ -80,7 +80,7 @@ Response body: None
 
 
 
-### List all the routes (TODO: remove?)
+### List all the routes
 [GET] `/api/routes` - List all the routes.
 
 Request body: None
@@ -154,7 +154,7 @@ Response body: A JSON object containing the list associated events and final coi
 
 
 ### Get the leaderboard
-[POST] `/api/games/leaderboard` - Retrieve the leaderboard with top scores of users.
+[POST] `/api/leaderboard` - Retrieve the leaderboard with top scores of users.
 
 Request body: None
 

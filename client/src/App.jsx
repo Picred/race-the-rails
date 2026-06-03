@@ -14,23 +14,23 @@ import { Homepage } from "./pages/Homepage.jsx";
 import { LeaderboardPage } from "./pages/LeaderboardPage.jsx";
 import { NotFoundPage } from "./pages/NotFoundPage.jsx";
 import { LoginPage } from "./pages/LoginPage.jsx";
+import { GameplayPage } from "./pages/GameplayPage.jsx";
 
 
 export const App = () => {
     const [user, set_user] = useState(undefined);
-    const [routes, set_routes] = useState(undefined);
 
 
     return (
         <UserContext.Provider value={{ user, set_user }}>
             <Routes>
-                <Route element={ <Layout/> }>
-                    <Route path="/" element={<Homepage routes={routes}/>} />
-                    <Route path="/login" element={ !user ? <LoginPage set_routes={set_routes}/> : <Navigate replace to="/"/> }/>
-                    <Route path="/games/leaderboard" element={ user ? <LeaderboardPage/> : <Navigate replace to="/login"/> }/>
+                <Route element={<Layout />}>
+                    <Route path="/" element={!user ? <Homepage /> : <GameplayPage />} />
+                    <Route path="/login" element={!user ? <LoginPage /> : <Navigate replace to="/" />} />
+                    <Route path="/leaderboard" element={user ? <LeaderboardPage /> : <Navigate replace to="/login" />} />
 
 
-                    <Route path="*" element={ <NotFoundPage/> } />
+                    <Route path="*" element={<NotFoundPage />} />
                 </Route>
             </Routes>
         </UserContext.Provider>

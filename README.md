@@ -15,39 +15,22 @@
 ## API Server
 
 ### Login
-[POST] `/api/sessions` - Create a new session (login). Returns user information + default routes +  
+[POST] `/api/sessions` - Create a new session (login). Returns user information
 
 Request body: A JSON object with username and password
   ```json
   {
-    "username" : "andrei",
+    "username" : "andrei.stefan@polito.it",
     "password" : "andreipsw"
   }
   ```
 
 Response: `201 Created` (success), `401 Unauthorized` (invalid credentials). 
 
-Response body: A JSON object containing the username and the related id.
+Response body: A JSON object containing the username.
   ```json
   {
-    "user": {
-      "id": 2,
-      "username": "andrei"
-    },
-    "routes": [
-      {
-        "line_name": "Linea Arancione",
-        "station_id": 3,
-        "station_name": "Qt8",
-        "stop_sequence": 1
-      },
-      {
-        "line_name": "Linea Blu",
-        "station_id": 7,
-        "station_name": "Nesima",
-        "stop_sequence": 4
-      }
-    ]
+    "username": "andrei.stefan@polito.it"
   }
   ```
 

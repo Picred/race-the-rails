@@ -33,15 +33,15 @@ export const LoginPage = (props) => {
         set_user({ user_id: user_data.user_id, username: user_data.username })
 
         // get routes
-        const all_routes_data = await GAME_API.list_routes();
-        if (all_routes_data.error) {
-            set_notification(all_routes_data.error)
-            return;
-        }
+        // const all_routes_data = await GAME_API.list_routes();
+        // if (all_routes_data.error) {
+        //     set_notification(all_routes_data.error)
+        //     return;
+        // }
 
-        // SUCCESS
-        props.set_routes(all_routes_data);
-        // all_routes_data.map(route => console.log(route));
+        // // SUCCESS
+        // props.set_routes(all_routes_data);
+        // // all_routes_data.map(route => console.log(route));
         navigate("/");
         
         set_username("");

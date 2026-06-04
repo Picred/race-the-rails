@@ -1,10 +1,10 @@
-const BASE_URL = "http://localhost:3001";
+const BASE_URL = "http://localhost:3001/api";
 
 
 
 const list_routes = async () => {
     try {
-        const response = await fetch(`${BASE_URL}/api/routes`, {
+        const response = await fetch(`${BASE_URL}/routes`, {
             credentials: "include"
         }); // TODO: includere cookie / credentials: true
 
@@ -12,13 +12,52 @@ const list_routes = async () => {
             const routes = await response.json();
             return routes;
         }
-        else{
-            return {error: "Rotte assenti"};
+        else {
+            return { error: "Rotte assenti" };
         }
     } catch (err) {
-        return ({error: "Errore di connessione con il server"});
+        return ({ error: "Errore di connessione con il server" });
     }
 }
 
 
-export const GAME_API = { list_routes };
+
+const list_stations = async () => {
+    try {
+        const response = await fetch(`${BASE_URL}/stations`, {
+            credentials: "include"
+        });
+
+        if (response.ok) {
+            const stations = await response.json();
+            return stations;
+        }
+        else {
+            return { error: "Stazioni assenti" };
+        }
+    } catch (err) {
+        return ({ error: "Errore di connessione con il server" });
+    }
+}
+
+const create_new_game = async () => {
+    try {
+        const response = await fetch(`${BASE_URL}/games`, {
+            method: "POST",
+            credentials: "include"
+        });
+
+        if (response.ok) {
+            const game_data = await response.json();
+            return game_data;
+        }
+        else {
+            return { error: "Dati di gioco assenti" };
+        }
+    } catch (err) {
+        return ({ error: "Errore di connessione con il server" });
+    }
+}
+
+
+export const GAME_API = { list_routes, list_stations, create_new_game };

@@ -15,36 +15,64 @@ const PHASES = {
 
 
 export const GameplayPage = (props) => {
-    const [current_phase, set_current_phase] = useState(PHASES.SETUP);
-    const [timer, set_timer] = useState();
-    const [routes_pairs, set_routes_pairs] = useState(undefined);
+    const [current_phase, set_current_phase] = useState("");
+    const [current_path, set_current_path] = useState([]);
+    const [timer, set_timer] = useState(90);
+
+    const [random_start_station_id, set_random_start_station_id] = useState();
+    const [random_end_station_id, set_random_end_station_id] = useState();
+
+    const [all_routes, set_all_routes] = useState(undefined);
+    const [all_stations, set_all_stations] = useState();
+
+
 
     useEffect(() => {
-        if (!current_phase == PHASES.SETUP) return;
+        set_current_phase(PHASES.SETUP);
+    }, []); // [] solo una volta!
+
+    useEffect(() => {
+        if (current_phase !== PHASES.SETUP) return;
 
         const get_all_routes = async () => {
             const all_routes_data = await GAME_API.list_routes();
             if (all_routes_data.error) return;
 
-            // get a list of route pairs 
-            // [
-            //     {prev: 1, next:2, line_name="Linea Rossa", is_slected:fakse},
-            //     {prev: 2, next:3, line_name="Linea Rossa", is_slected:fakse},
-            //     {prev: 3, next:4, line_name="Linea Rossa", is_slected:fakse},
-            //     {prev: 1, next:2, line_name="Linea Rossa", is_slected:fakse},
-            // ]
-            set_routes_pairs(all_routes_data);
-            // all_routes_data.map(route => console.log(route));
+            set_all_routes(all_routes_data);
+        }
 
+        const get_all_stations = async () => {
+            const stations = await GAME_API.list_stations();
+            set_all_stations(stations);
         }
         get_all_routes();
-
+        get_all_stations();
     }, [current_phase])
 
 
+
     return <>
-        {current_phase === PHASES.SETUP && <SetupPhase />}
-        {current_phase === PHASES.PLANNING && <PlanningPhase />}
+        {current_phase === PHASES.SETUP &&
+            <SetupPhase
+                set_current_phase={set_current_phase}
+                phases={PHASES}
+                set_random_start_station_id={set_random_start_station_id}
+                set_random_end_station_id={set_random_end_station_id}
+            />}
+
+        {current_phase === PHASES.PLANNING &&
+            <PlanningPhase timer={timer}
+                set_timer={set_timer}
+                all_routes={all_routes}
+                random_start_station_id={random_start_station_id}
+                random_end_station_id={random_end_station_id}
+                all_stations={all_stations}
+                set_current_path={set_current_path}
+                set_current_phase={set_current_phase}
+                current_path={current_path}
+                phases={PHASES}
+            />}
+
         {current_phase === PHASES.GAMEPLAY && <GameplayPhase />}
         {current_phase === PHASES.RESULTS && <ResultsPhase />}
     </>

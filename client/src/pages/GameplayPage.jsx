@@ -20,6 +20,8 @@ export const GameplayPage = (props) => {
     const [routes_pairs, set_routes_pairs] = useState(undefined);
 
     useEffect(() => {
+        if (!current_phase == PHASES.SETUP) return;
+
         const get_all_routes = async () => {
             const all_routes_data = await GAME_API.list_routes();
             if (all_routes_data.error) return;
@@ -37,7 +39,7 @@ export const GameplayPage = (props) => {
         }
         get_all_routes();
 
-    }, [])
+    }, [current_phase])
 
 
     return <>

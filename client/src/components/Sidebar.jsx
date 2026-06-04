@@ -16,6 +16,7 @@ export const Sidebar = (props) => {
         e.preventDefault();
         USER_API.logout();
         set_user("");
+        navigate("/");
     };
 
     return (

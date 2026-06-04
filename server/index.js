@@ -9,10 +9,12 @@ import { check, validationResult } from "express-validator";
 import { 
     get_user, 
     list_events, 
-    list_routes, 
+    list_routes,
+    list_stations,
     create_new_game, 
     validate_game,
-    get_leaderboard_per_user
+    get_leaderboard_per_user,
+    get_single_segments_from_routes
 } from "./db/dao.js";
 
 const server = express();
@@ -65,7 +67,6 @@ const is_logged_in = (req, res, next) => {
 
 server.post("/api/sessions", passport.authenticate("local"), async (req, res) => {
     try {
-        // const all_routes = await list_routes();
         return res.status(201).json({username: req.user.username});
     } catch (err) {
         console.error("Error while fetching routes: " + err);
@@ -119,10 +120,22 @@ server.post("/api/games/:id/validate", is_logged_in, [
 });
 
 
+server.get("/api/stations", is_logged_in, async (req, res) => {
+    try {
+        const stations = await list_stations();
+        res.json(stations);
+    } catch (err) {
+        console.error(err);
+        res.status(500).end({error: err.message});
+    }
+});
+
+
 server.get("/api/routes", is_logged_in, async (req, res) => {
     try {
         const routes = await list_routes();
-        res.json(routes);
+        const computed_segments = get_single_segments_from_routes(routes);
+        res.json(computed_segments);
     } catch (err) {
         console.error(err);
         res.status(500).end({error: err.message});

@@ -13,7 +13,8 @@ export function Event(description, effect) {
 };
 
 
-export function Station(station_name) {
+export function Station(station_id, station_name) {
+    this.station_id = station_id;
     this.station_name = station_name
 };
 

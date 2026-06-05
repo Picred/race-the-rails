@@ -10,8 +10,6 @@ export const SetupPhase = (props) => {
         props.set_random_start_station_id(game_data.random_start_station_id);
         props.set_random_end_station_id(game_data.random_end_station_id);
         props.set_game_id(game_data.game_id);
-
-        console.log("DEBUG: game_id:" + game_data.game_id, game_data.random_start_station_id, game_data.random_end_station_id);
     }
 
     return (

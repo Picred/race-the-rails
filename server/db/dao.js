@@ -277,10 +277,10 @@ export const validate_game = async (game_id, path) => {
 export const get_leaderboard_per_user = async () => {
     return new Promise((resolve, reject) => {
         const sql = `
-            SELECT u.username, MAX(g.score) AS score
+            SELECT g.game_id, u.username, MAX(g.score) AS score
             FROM games g
             JOIN users u ON g.user_id = u.user_id
-            WHERE score != NULL
+            WHERE score IS NOT NULL
             GROUP BY u.user_id
             ORDER BY g.score DESC;
         `;

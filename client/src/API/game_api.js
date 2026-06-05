@@ -79,8 +79,27 @@ const send_current_path = async (current_path, game_id) => {
             return error_data;
         }
     } catch (err) {
-        return { error: err };
+        return { message: err };
     }
 }
 
-export const GAME_API = { list_routes, list_stations, create_new_game, send_current_path };
+const get_leaderboard = async () => {
+    try{
+        const response = await fetch(`${BASE_URL}/leaderboard`, {
+            credentials: "include"
+        });
+
+        if(response.ok){
+            const leaderboard = await response.json();
+            return leaderboard;
+        }
+        else{
+            const error_data = await response.json();
+            return error_data;
+        }
+    }catch(err){
+        return { message : err}
+    }
+}
+
+export const GAME_API = { list_routes, list_stations, create_new_game, send_current_path, get_leaderboard };

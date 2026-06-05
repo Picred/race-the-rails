@@ -146,6 +146,7 @@ server.get("/api/routes", is_logged_in, async (req, res) => {
 server.get("/api/leaderboard", is_logged_in, async (req, res) => {
     try{
         const leaderboard = await get_leaderboard_per_user();
+        // console.log(leaderboard);
         return res.json(leaderboard);
 
     }catch(err){

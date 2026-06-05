@@ -10,7 +10,8 @@ export const GameplayPhase = (props) => {
     const current_event = props.game_results?.events[current_step];
 
     useEffect(() => {
-        if (!current_route_id || !current_event) return;
+        // if (!current_route_id || !current_event) return;
+        if (!current_event) return;
 
         const timer = setTimeout(() => {
             const effect_value = current_event.effect;

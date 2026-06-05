@@ -91,8 +91,6 @@ export const GameplayPage = (props) => {
             set_error_feedback(response.message);
             set_game_results({final_coins: 0, events: []});
             set_current_phase(PHASES.RESULTS)
-            console.log("ERRORE???????:::" + response.message)
-
         }
         else {
             // percorso valido

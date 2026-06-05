@@ -256,7 +256,7 @@ export const validate_game = async (game_id, path) => {
 
 
     // associate random events to single stations - event[i] <-> path[i]
-    const number_of_events = path.length;
+    const number_of_events = path.length-1;
     const all_events = await list_events();
     const events_selected = get_n_random_events(all_events, number_of_events);
 
@@ -269,6 +269,7 @@ export const validate_game = async (game_id, path) => {
 
     await end_game_by_id(game_id, game_row.user_id, final_coins);
 
+    if(final_coins < 0) final_coins = 0;
     return new Game(final_coins, events_selected);
 };
 

@@ -19,6 +19,11 @@ export const GameplayPage = (props) => {
     const [current_path, set_current_path] = useState([]);
     const [timer, set_timer] = useState(90);
 
+    const [game_id, set_game_id] = useState();
+    const [game_results, set_game_results] = useState();
+
+    const [error_feedback, set_error_feedback] = useState();
+
     const [random_start_station_id, set_random_start_station_id] = useState();
     const [random_end_station_id, set_random_end_station_id] = useState();
 
@@ -51,9 +56,41 @@ export const GameplayPage = (props) => {
 
 
 
+    const handle_send_current_path = async () => {
+
+        const selected_path_ids = []
+        for (let i = 0; i < current_path.length; i++) {
+            // prendo le info sulla route
+            const route_data = all_routes.find(route => route.route_id === current_path[i]);
+
+            if (route_data) //lultima stazione è la to_station_id nella route trovata.
+                selected_path_ids.push(route_data.from_station_id);
+
+            if (i === current_path.length - 1)
+                selected_path_ids.push(route_data.to_station_id);
+        }
+        const response = await GAME_API.send_current_path(selected_path_ids, game_id);
+        if (response.error) {
+            set_error_feedback(response.error);
+            set_current_phase(PHASES.RESULTS)
+        }
+        else {
+            // // percorso valido?
+            console.log(response.final_coins)
+            console.log(response.events)
+            set_game_results(response);
+            console.log(game_results)
+
+            set_current_phase(PHASES.GAMEPLAY)
+        }
+
+        // percorso non valido?
+    }
+
     return <>
         {current_phase === PHASES.SETUP &&
             <SetupPhase
+                set_game_id={set_game_id}
                 set_current_phase={set_current_phase}
                 phases={PHASES}
                 set_random_start_station_id={set_random_start_station_id}
@@ -71,9 +108,20 @@ export const GameplayPage = (props) => {
                 set_current_phase={set_current_phase}
                 current_path={current_path}
                 phases={PHASES}
+                handle_send_current_path={handle_send_current_path}
             />}
 
-        {current_phase === PHASES.GAMEPLAY && <GameplayPhase />}
-        {current_phase === PHASES.RESULTS && <ResultsPhase />}
+        {current_phase === PHASES.GAMEPLAY &&
+            <GameplayPhase game_results={game_results}
+                error_feedback={error_feedback}
+                set_current_phase={set_current_phase}
+                current_path={current_path}
+
+            />}
+
+        {current_phase === PHASES.RESULTS &&
+            <ResultsPhase error_feedback={error_feedback}
+                game_results={game_results}
+            />}
     </>
 }

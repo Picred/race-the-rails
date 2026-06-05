@@ -32,7 +32,7 @@ POST http://localhost:3001/api/games/1/validate
 Content-Type: application/json
 
 {
-  "path": [9,5, 7, 3, 4, 1, 2]
+  "path": [9]
 }
 ###
 

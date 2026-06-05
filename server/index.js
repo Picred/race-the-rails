@@ -115,7 +115,7 @@ server.post("/api/games/:id/validate", is_logged_in, [
         res.json(game_data);
     }catch(err){
         console.error("validation error: " + err.message);
-        res.status(err.error_code).json({error: err.message});
+        res.status(err.error_code).json({message: err.message});
     }
 });
 

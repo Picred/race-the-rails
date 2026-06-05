@@ -1,3 +1,5 @@
-export const GameplayPhase = () => {
-    return <p>Gameplay Phase</p>
+export const GameplayPhase = (props) => {
+    return (<>
+    <p>Gameplay Phase</p>
+    </>)
 }

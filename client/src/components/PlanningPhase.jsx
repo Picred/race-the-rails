@@ -4,6 +4,8 @@ import { GAME_API } from "../API/game_api";
 import { get_station_name_by_id } from "../utils/utils.js";
 
 export const PlanningPhase = (props) => {
+    const random_start_station = get_station_name_by_id(props.all_stations, props.random_start_station_id);
+    const random_end_station = get_station_name_by_id(props.all_stations, props.random_end_station_id);
 
     useEffect(() => {
         const interval_handle = setInterval(() => {
@@ -12,7 +14,7 @@ export const PlanningPhase = (props) => {
                     clearInterval(interval_handle);
 
                     // invio percorso al server. risposta positiva? "gameplay" altrimenti "results" e game fallito.
-                    // props.set_current_phase(props.phases.GAMEPLAY); // comment per debug
+                    props.handle_send_current_path();
                     return 0;
                 }
                 return old_timer - 1;
@@ -22,20 +24,16 @@ export const PlanningPhase = (props) => {
         return () => clearInterval(interval_handle);
     }, []);
 
-    const random_start_station = get_station_name_by_id(props.all_stations, props.random_start_station_id);
-    const random_end_station = get_station_name_by_id(props.all_stations, props.random_end_station_id);
 
 
     const handle_path_selection = (route_id) => {
-
-        // if (props.current_path?.some(r => r.route_id === station_id)) return;
-        if (props.current_path?.includes(route_id)) return;
         props.set_current_path((prev_path) => [...prev_path, route_id]);
     }
 
     const handle_reset_path = () => {
-
+        props.set_current_path([]);
     }
+
 
     return (
         <>
@@ -52,13 +50,12 @@ export const PlanningPhase = (props) => {
                 <Container fluid className="fs-5 fw-bold text-warning my-2">
                     PERCORSO SELEZIONATO:{" "}
                     {props.current_path && props.current_path.length > 0 ? (
-                        props.current_path.map((route_id, index) => {
-                            // Troviamo la tratta per sapere quali stazioni unisce
+                        props.current_path.map((route_id) => {
+                            // route_id = "Linea Arancione 5-7", la cerco in all_routes.
                             const route = props.all_routes?.find(r => r.route_id === route_id);
                             return (
                                 <span className="border mx-2 wrap" key={route_id}>
                                     {route ? `${route.from_station_name}—${route.to_station_name}` : route_id}
-                                    {index < props.current_path.length - 1 ? " ➔ " : ""}
                                 </span>
                             );
                         })
@@ -86,10 +83,18 @@ export const PlanningPhase = (props) => {
                                 </Button>
                             )
                         })
-                    }  
+                    }
                 </Stack>
 
-                <Button className="btn btn-danger" onClick={() => props.set_current_path([])}>Ricomincia</Button>
+
+                <Stack direction="horizontal" className="justify-content-center " gap={3}>
+
+                <Button className="btn btn-danger" onClick={handle_reset_path}>Ricomincia</Button>
+                <Button className="btn btn-warning" onClick={props.handle_send_current_path}>Invia percorso</Button>
+                </Stack>
+
+
+
             </Stack>
         </>
     )

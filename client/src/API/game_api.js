@@ -59,5 +59,28 @@ const create_new_game = async () => {
     }
 }
 
+const send_current_path = async (current_path, game_id) => {
+    try {
+        const response = await fetch(`${BASE_URL}/games/${game_id}/validate`, {
+            method: "POST",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ path: current_path }),
+        });
 
-export const GAME_API = { list_routes, list_stations, create_new_game };
+        if (response.ok) {
+            const game_results = await response.json();
+            return game_results;
+        }
+        else {
+            const error_data = await response.json();
+            return error_data;
+        }
+    } catch (err) {
+        return { error: err };
+    }
+}
+
+export const GAME_API = { list_routes, list_stations, create_new_game, send_current_path };

@@ -88,6 +88,15 @@ export const get_single_segments_from_routes = (all_routes) => {
                 to_station_id: next_stop.station_id,
                 to_station_name: next_stop.station_name,
             });
+
+            computed_segments.push({
+                route_id: `${current_stop.line_name}-${next_stop.station_id}-${current_stop.station_id}`,
+                line_name: current_stop.line_name,
+                from_station_id: next_stop.station_id,
+                from_station_name: next_stop.station_name,
+                to_station_id: current_stop.station_id,
+                to_station_name: current_stop.station_name,
+            });
         }
     }
     return computed_segments;

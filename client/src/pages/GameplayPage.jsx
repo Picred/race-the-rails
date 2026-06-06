@@ -15,7 +15,7 @@ const PHASES = {
 
 
 export const GameplayPage = (props) => {
-    const [current_phase, set_current_phase] = useState("");
+    const [current_phase, set_current_phase] = useState(PHASES.SETUP);
     const [current_path, set_current_path] = useState([]); // ["Linea Arancione 3-7"]
     const [timer, set_timer] = useState(90);
 
@@ -33,10 +33,6 @@ export const GameplayPage = (props) => {
 
 
     useEffect(() => {
-        set_current_phase(PHASES.SETUP);
-    }, []); // [] solo una volta!
-
-    useEffect(() => {
         if (current_phase !== PHASES.SETUP) return;
 
         const get_all_routes = async () => {
@@ -52,8 +48,8 @@ export const GameplayPage = (props) => {
         }
         get_all_routes();
         get_all_stations();
-        
-        
+
+
         set_timer(90);
         set_game_id(undefined);
         set_error_feedback("");
@@ -89,7 +85,7 @@ export const GameplayPage = (props) => {
 
         if (response.message) { // non valido
             set_error_feedback(response.message);
-            set_game_results({final_coins: 0, events: []});
+            set_game_results({ final_coins: 0, events: [] });
             set_current_phase(PHASES.RESULTS)
         }
         else {

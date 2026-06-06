@@ -4,11 +4,10 @@
 
 ## React Client Application Routes
 
-- Route `/`: page content and purpose
-- Route `/something/:param`: page content and purpose, param specification
-- ...
-
-
+- Route `/`: it contains the title of the game and the a button used for the navigation to the login page.
+- Route `/login`: it contains the login form used to create the session.
+- Route `/leaderboard`: it contains a table which shows the best scores of all registered users.
+- Route `*`: it contains the 404 Not Found eror if any other non specified route are requested.
 
 
 
@@ -35,7 +34,6 @@ Response body: A JSON object containing the username.
   ```
 
 
-
 ### Check if still logged in
 [GET] `/api/sessions/current` - Check if the user is still logged in
 
@@ -47,7 +45,7 @@ Response body: A JSON object containing the username and the related id.
   ```json
   {
     "id" : 1,
-    "username": "andrei",
+    "username": "andrei.stefan@polito.it",
   }
   ```
 
@@ -74,17 +72,22 @@ Response body: A JSON object containing the list of the routes.
   ```json
   [
     {
-      "line_name": "Linea Rossa",
-      "station_id": 5,
-      "station_name": "Centrale",
-      "stop_sequence": 2
+      "route_id": "Linea Arancione-3-7",
+      "line_name": "Linea Arancione",
+      "from_station_id": 3,
+      "from_station_name": "Qt8",
+      "to_station_id": 7,
+      "to_station_name": "Giuffrida"
     },
     {
-      "line_name": "Linea Blu",
-      "station_id": 7,
-      "station_name": "Nesima",
-      "stop_sequence": 4
-    },
+    "route_id": "Linea Arancione-7-3",
+    "line_name": "Linea Arancione",
+    "from_station_id": 7,
+    "from_station_name": "Giuffrida",
+    "to_station_id": 3,
+    "to_station_name": "Qt8"
+  }
+  ...
   ]
   ```
 
@@ -116,7 +119,7 @@ Request body: A JSON object containing the selected route.
   }
   ```
 
-Response: `200 OK` (success), `401 Unauthorized` (user not logged in), `403 Forbidden` (timeout) `500 Internal Server Error` (failure), `400 Bad Request` (start/end stations aren't the same), `404 Not Found` (if start time doesn't exists on database), `422 Unprocessable entity` (if `path` is not specified)
+Response: `200 OK` (success), `401 Unauthorized` (user not logged in), `408 Forbidden` (timeout) `500 Internal Server Error` (failure), `400 Bad Request` (start/end stations aren't the same or path too short), `404 Not Found` (if start time doesn't exists on database), `422 Unprocessable entity` (if `path` is not specified)
 
 Response body: A JSON object containing the list associated events and final coins.
   ```json
@@ -146,21 +149,20 @@ Response: `200 OK` (success), `401 Unauthorized` (user not logged in), `500 Inte
 Response body: A JSON object containing the leaderbord (if exists) or object with empty array (if there aren't played games).
   ```json
   {
-    "entries": [
-      {
-        "username": "alice",
-        "score": 18
-      },
-      {
-        "username": "andrei",
-        "score": 17
-      }
-    ]
-  }
+  "entries": [
+    {
+      "game_id": 1,
+      "username": "andrei.stefan@polito.it",
+      "score": 29
+    },
+    {
+      "game_id": 3,
+      "username": "alice.russo@polito.it",
+      "score": 25
+    }
+  ]
+}
   ```
-
-
-
 
 
 
@@ -174,8 +176,18 @@ Response body: A JSON object containing the leaderbord (if exists) or object wit
 
 ## Main React Components
 
-- `ListOfSomething` (in `List.js`): component purpose and main functionality
-- `GreatButton` (in `GreatButton.js`): component purpose and main functionality
+- `Homepage` (in `Homepage.jsx`): used for anonymous users in order to allow the login phase.
+- `GameplayPage` (in `GameplayPage.jsx`): contains the main logic which contains shared status of the entire gameplay.
+- `LeaderboardPage` (in `LeaderboardPage.jsx`): Contains the leaderboard.
+- `LoginPage` (in `LoginPage.jsx`): contains a form which allow anonymous users to log in. 
+- `Layout` (in `Layout.jsx`): used for the rendering of the default layout used by other components
+- `Sidebar` (in `Sidebar.jsx`): contains the button which shows game rules and leaderboard.
+- `SetupPhase` (in `SetupPhase.jsx`): contains the map of the network with lines. It requires the initial data from the server required for the setup phase of the game.
+- `PlanningPhase` (in `PlanningPhase.jsx`): contains the map of the network without the lines, the assigned start/end stations, a visible timer and all the pairs of connected stations.
+- `GameplayPhase` (in `GameplayPhase.jsx`): contains the selected path by the user as pairs and the effects applied to the total amount of coins.
+- `ResultsPhase` (in `ResultsPhase.jsx`): contains the final result of the game or the error returned by the server, if any.
+
+
 - ...
 
 (only _main_ components, minor ones may be skipped)
@@ -192,5 +204,4 @@ Response body: A JSON object containing the leaderbord (if exists) or object wit
 - antonella.ferrari@polito.it, antonellapsw TODO(plus any other requested info)
 
 ## Use of AI Tools
-Briefly describe whether you used any AI tools (e.g., ChatGPT, GitHub Copilot, Claude) while working on this project, for which purposes (e.g., clarifying concepts, debugging, generating code), and how you verified or adapted their output.
-If you did not use any AI tools, simply state so.
+I didn't used AI tools.

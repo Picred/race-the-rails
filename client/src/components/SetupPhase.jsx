@@ -1,5 +1,5 @@
 import { Stack, Image, Button } from "react-bootstrap"
-import { GAME_API } from "../API/game_api"
+import { GAME_API } from "../API/game_api.js"
 
 export const SetupPhase = (props) => {
 

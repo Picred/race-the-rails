@@ -1,5 +1,5 @@
-import { Button, Container, Stack } from "react-bootstrap"
-import { Link } from "react-router"
+import { Button, Container, Stack } from "react-bootstrap";
+import { Link } from "react-router";
 import { useContext, useEffect } from "react";
 import { Instructions } from "../components/Instructions.jsx";
 import { UserContext } from "../context/UserContext.js";

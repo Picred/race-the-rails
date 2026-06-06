@@ -1,6 +1,6 @@
 import { useEffect } from "react"
 import { Container, Button, Stack, Image } from "react-bootstrap";
-import { GAME_API } from "../API/game_api";
+import { GAME_API } from "../API/game_api.js";
 import { get_station_name_by_id } from "../utils/utils.js";
 
 export const PlanningPhase = (props) => {
@@ -9,12 +9,12 @@ export const PlanningPhase = (props) => {
 
     useEffect(() => {
         const interval_handle = setInterval(() => {
+            
             props.set_timer((old_timer) => {
                 if (old_timer <= 1) {
                     clearInterval(interval_handle);
 
-                    // invio percorso al server. risposta positiva? "gameplay" altrimenti "results" e game fallito.
-                    props.handle_send_current_path();
+                    // props.handle_send_current_path();
                     return 0;
                 }
                 return old_timer - 1;
@@ -24,6 +24,12 @@ export const PlanningPhase = (props) => {
         return () => clearInterval(interval_handle);
     }, []);
 
+
+    useEffect(() => {
+        if (props.timer === 0){
+            props.handle_send_current_path();
+        }
+    },[props.timer])
 
 
     const handle_path_selection = (route_id) => {

@@ -28,8 +28,6 @@ export const App = () => {
                     <Route path="/" element={!user ? <Homepage /> : <GameplayPage />} />
                     <Route path="/login" element={!user ? <LoginPage /> : <Navigate replace to="/" />} />
                     <Route path="/leaderboard" element={user ? <LeaderboardPage /> : <Navigate replace to="/login" />} />
-
-
                     <Route path="*" element={<NotFoundPage />} />
                 </Route>
             </Routes>

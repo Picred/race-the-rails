@@ -61,12 +61,12 @@ export const GameplayPage = (props) => {
 
 
     const handle_send_current_path = async () => {
-        if (!current_path || current_path.length === 0) {
-            set_error_feedback("Nessuna tratta selezionata. Il viaggio è incompleto.");
-            set_game_results({ final_coins: 0, events: [] }); // totale finale 0
-            set_current_phase(PHASES.RESULTS);
-            return;
-        }
+        // if (!current_path || current_path.length === 0) {
+        //     set_error_feedback("Nessuna tratta selezionata. Il viaggio è incompleto.");
+        //     set_game_results({ final_coins: 0, events: [] }); // totale finale 0
+        //     set_current_phase(PHASES.RESULTS);
+        //     return;
+        // }
 
         const selected_path_ids = []
         for (let i = 0; i < current_path.length; i++) {
@@ -139,7 +139,6 @@ export const GameplayPage = (props) => {
                     game_results={game_results}
                     phases={PHASES}
                     set_current_phase={set_current_phase}
-                    phases={PHASES}
                 />
             }
         </>

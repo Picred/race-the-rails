@@ -1,5 +1,5 @@
 import { Outlet } from "react-router";
-import { Sidebar } from "./Sidebar";
+import { Sidebar } from "./Sidebar.jsx";
 import { Col, Container, Row } from "react-bootstrap";
 
 export const Layout = () => {

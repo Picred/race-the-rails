@@ -3,6 +3,10 @@ import { GAME_API } from "../API/game_api.js";
 import { Button, Stack, Table } from "react-bootstrap";
 import { useNavigate } from "react-router";
 
+/**
+ * [Renders a table of best scores totalized in the past.]
+ * @returns a table containing the leaderboard of the game per user.
+ */
 export const LeaderboardPage = () => {
     const [error_feedback, set_error_feedback] = useState();
     const [leaderboard_entries, set_leaderboard_entries] = useState([]);

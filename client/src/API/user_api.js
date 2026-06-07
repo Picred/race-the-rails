@@ -1,7 +1,11 @@
 const BASE_URL = "http://localhost:3001/api";
 
 
-// login
+/**
+ * [Log in the account]
+ * @param {Object} credentials 
+ * @returns the username of the user.
+ */
 const login = async (credentials) => {
     try {
         const response = await fetch(`${BASE_URL}/sessions`, {
@@ -28,7 +32,9 @@ const login = async (credentials) => {
 }
 
 
-//logout
+/**
+ * [Log out from the account]
+ */
 const logout = async () => {
     await fetch(`${BASE_URL}/sessions/current`, {
         method: "DELETE",

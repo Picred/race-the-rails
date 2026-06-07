@@ -1,7 +1,10 @@
 const BASE_URL = "http://localhost:3001/api";
 
 
-
+/**
+ * [Fetch the routes from the database]
+ * @returns The list of all the available routes fetched from the database.
+ */
 const list_routes = async () => {
     try {
         const response = await fetch(`${BASE_URL}/routes`, {
@@ -21,7 +24,10 @@ const list_routes = async () => {
 }
 
 
-
+/**
+ * [Fetches the stations from the database]
+ * @returns The list of all the available stations fetched from the database.
+ */
 const list_stations = async () => {
     try {
         const response = await fetch(`${BASE_URL}/stations`, {
@@ -40,6 +46,10 @@ const list_stations = async () => {
     }
 }
 
+/**
+ * [Creates the game row in the database with the current time.]
+ * @returns the `game_id` and start/end stations
+ */
 const create_new_game = async () => {
     try {
         const response = await fetch(`${BASE_URL}/games`, {
@@ -59,6 +69,12 @@ const create_new_game = async () => {
     }
 }
 
+/**
+ * [Sends the path selected to the server for validation]
+ * @param {Array} current_path 
+ * @param {Number} game_id 
+ * @returns the total amount of coins and the associated events to the path.
+ */
 const send_current_path = async (current_path, game_id) => {
     try {
         const response = await fetch(`${BASE_URL}/games/${game_id}/validate`, {
@@ -83,6 +99,10 @@ const send_current_path = async (current_path, game_id) => {
     }
 }
 
+/**
+ * [Request the updated leaderboard from the server.]
+ * @returns the list of users with their top score.
+ */
 const get_leaderboard = async () => {
     try{
         const response = await fetch(`${BASE_URL}/leaderboard`, {

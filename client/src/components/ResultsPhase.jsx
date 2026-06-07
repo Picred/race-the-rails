@@ -1,5 +1,10 @@
 import { Button } from "react-bootstrap";
 
+/**
+ * [Renders the remaining coins of the user when the game is finished or an error if any.]
+ * @param {Object} props 
+ * @returns the results of the game just ended.
+ */
 export const ResultsPhase = (props) => {
     return (
         <>

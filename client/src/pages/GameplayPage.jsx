@@ -14,6 +14,11 @@ const PHASES = {
 }
 
 
+/**
+ * [Renders all the 4 phases of the game based on its internal states (Setup, Planning, Gameplay, Results).]
+ * @param {Object} props 
+ * @returns the gameplay of the game based on its state. 
+ */
 export const GameplayPage = (props) => {
     const [current_phase, set_current_phase] = useState(PHASES.SETUP);
     const [current_path, set_current_path] = useState([]); // ["Linea Arancione 3-7"]

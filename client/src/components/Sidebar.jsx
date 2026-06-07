@@ -7,7 +7,11 @@ import { Instructions } from "./Instructions.jsx";
 import { USER_API } from "../API/user_api.js";
 
 
-
+/**
+ * [Renders a sidebar with Rules, Leaderboard and Logout(if logged in) buttons.]
+ * @param {Object} props 
+ * @returns a rendered sidebar.
+ */
 export const Sidebar = (props) => {
     const navigate = useNavigate();
     const { user, set_user } = useContext(UserContext);
@@ -54,19 +58,30 @@ export const Sidebar = (props) => {
     );
 }
 
-
+/**
+ * [Renders a Railroad icon]
+ * @returns a railroad icon
+ */
 const RailroadSign = () => {
     return (
         <i className="bi bi-sign-railroad fs-1 text-warning"></i>
     );
 }
 
+/**
+ * [Renders a Key icon]
+ * @returns a Key icon
+ */
 const KeyIcon = () => {
     return (
         <i className="bi bi-person-lock"></i>
     );
 }
 
+/**
+ * [Renders a Logout icon]
+ * @returns a Logout icon
+ */
 const LogoutIcon = () => {
     return (
         <i className="bi bi-box-arrow-left text-warning display-6 mt-2"></i>

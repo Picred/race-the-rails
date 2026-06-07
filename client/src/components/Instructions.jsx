@@ -1,6 +1,11 @@
 import { useState } from "react";
 import { Button, Modal, ListGroup, Stack } from "react-bootstrap";
 
+/**
+ * [Renders the rules of the game]
+ * @param {Object} props 
+ * @returns a Modal component with the rules of the game.
+ */
 export const Instructions = (props) => {
     const [show_instrutions, set_show_instructions] = useState(false);
 

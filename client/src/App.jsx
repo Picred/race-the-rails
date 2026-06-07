@@ -16,7 +16,10 @@ import { NotFoundPage } from "./pages/NotFoundPage.jsx";
 import { LoginPage } from "./pages/LoginPage.jsx";
 import { GameplayPage } from "./pages/GameplayPage.jsx";
 
-
+/**
+ * [Renders all the components of the game.]
+ * @returns the core of the game and the implemented routes.
+ */
 export const App = () => {
     const [user, set_user] = useState(undefined);
 

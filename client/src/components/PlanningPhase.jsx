@@ -3,6 +3,11 @@ import { Container, Button, Stack, Image } from "react-bootstrap";
 import { GAME_API } from "../API/game_api.js";
 import { get_station_name_by_id } from "../utils/utils.js";
 
+/**
+ * [Renders the map without the lines, start/end stations and a timer]
+ * @param {Object} props 
+ * @returns the rendered component with useful tools for planning the route in the game.
+ */
 export const PlanningPhase = (props) => {
     const random_start_station = get_station_name_by_id(props.all_stations, props.random_start_station_id);
     const random_end_station = get_station_name_by_id(props.all_stations, props.random_end_station_id);

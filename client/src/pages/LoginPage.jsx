@@ -6,6 +6,11 @@ import { UserContext } from "../context/UserContext.js"
 import { USER_API } from "../API/user_api.js";
 import { GAME_API } from "../API/game_api.js";
 
+/**
+ * [Renders a login form.]
+ * @param {Object} props 
+ * @returns the login form in order to log into the account.
+ */
 export const LoginPage = (props) => {
     const [username, set_username] = useState("");
     const [password, set_password] = useState("");

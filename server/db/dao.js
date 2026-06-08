@@ -18,7 +18,13 @@ const db = new sqlite.Database("./db/rails.sqlite", async (err) => {
     //   await db.get("PRAGMA foreign_keys = ON"); // di default la gestione attiva delle chiavi esterne non è abilitata. mi fa inserire ugualmente valori che non rispettano la FK
 });
 
-// authentication
+
+/**
+ * [Performs the login by using credentials saved on db.]
+ * @param {string} username 
+ * @param {string} password 
+ * @returns user information if credentials are valid.
+ */
 export const get_user = (username, password) => {
     return new Promise((resolve, reject) => {
         const sql = "SELECT * FROM users WHERE username = ?";
@@ -42,8 +48,10 @@ export const get_user = (username, password) => {
 };
 
 
-
-
+/**
+ * [Gets all the events]
+ * @returns an array containing all the events registered on the database.
+ */
 export const list_events = async () => {
     return new Promise((resolve, reject) => {
         const sql = "SELECT * FROM events;";
@@ -58,6 +66,11 @@ export const list_events = async () => {
     });
 }
 
+
+/**
+ * [Gets all the stations]
+ * @returns an array containing all the stations saved on the database.
+ */
 export const list_stations = async () => {
     return new Promise((resolve, reject) => {
         const sql = "SELECT * FROM stations;";
@@ -72,6 +85,12 @@ export const list_stations = async () => {
     });
 }
 
+
+/**
+ * [Gets all single steps between 2 stations (forward/backward)]
+ * @param {[Object]} all_routes 
+ * @returns {[Object]} an array containng all the couples of segments between stops.
+ */
 export const get_single_segments_from_routes = (all_routes) => {
     let computed_segments = [];
     for (let i = 0; i < all_routes.length - 1; i++) {
@@ -103,6 +122,10 @@ export const get_single_segments_from_routes = (all_routes) => {
 }
 
 
+/**
+ * [Gets all the routes]
+ * @returns an array containing all the routes saved on the database.
+ */
 export const list_routes = async () => {
     return new Promise((resolve, reject) => {
         const sql = "SELECT * FROM routes r, stations s WHERE r.station_id = s.station_id ORDER BY line_name, stop_sequence;";
@@ -119,6 +142,12 @@ export const list_routes = async () => {
 }
 
 
+/**
+ * [Calculate all the distances from a starting point]
+ * @param {[Object]} all_routes 
+ * @param {Object} random_start_route_step 
+ * @returns an array containing all the distances from `random_start_route_step` ordered by `station_id`.
+ */
 const calculate_distances_from_station = (all_routes, random_start_route_step) => {
     const distances = [];
     distances[random_start_route_step.station_id] = 0;
@@ -147,6 +176,12 @@ const calculate_distances_from_station = (all_routes, random_start_route_step) =
 }
 
 
+/**
+ * [Generates a random and valid end route step]
+ * @param {[Object]} all_routes 
+ * @param {Object} random_start_route_step 
+ * @returns a randomly selected end route step.
+ */
 const get_random_end_route_step = (all_routes, random_start_route_step) => {
     const distances = calculate_distances_from_station(all_routes, random_start_route_step);
 
@@ -163,6 +198,15 @@ const get_random_end_route_step = (all_routes, random_start_route_step) => {
     return valid_end_stations[random_index];
 }
 
+
+/**
+ * [Inserts a new row on `games` table]
+ * @param {Number} user_id 
+ * @param {dayjs} start_time 
+ * @param {Number} start_station_id 
+ * @param {Number} end_station_id 
+ * @returns {Promise<Number>} the id of the last game inserted on the database.
+ */
 const insert_new_game = async (user_id, start_time, start_station_id, end_station_id) => {
     return new Promise((resolve, reject) => {
         const sql = "INSERT INTO games(user_id, score, start_time, start_station_id, end_station_id) VALUES (?, ?, ?, ?, ?);"
@@ -174,6 +218,11 @@ const insert_new_game = async (user_id, start_time, start_station_id, end_statio
 }
 
 
+/**
+ * [Creates a new row to insert in the `games` table on the database]
+ * @param {Number} user_id 
+ * @returns an object with the last `game_id` inserted and the randomly selected `start/end station ids`.
+ */
 export const create_new_game = async (user_id) => {
     // select random start/end stations from routes
     const routes = await list_routes();
@@ -204,6 +253,12 @@ export const create_new_game = async (user_id) => {
     };
 }
 
+
+/**
+ * [Get the game record from the database by its id]
+ * @param {Number} game_id 
+ * @returns the corresponding row on the databse, if `game_id' exists
+ */
 const get_game_by_id = async (game_id) => {
     return new Promise((resolve, reject) => {
         const sql = "SELECT * FROM games WHERE game_id = ?;";
@@ -214,6 +269,14 @@ const get_game_by_id = async (game_id) => {
     });
 }
 
+
+/**
+ * [Updates the score of the `user_id` on the row specified by `game_id`]
+ * @param {Number} game_id 
+ * @param {Number*} user_id 
+ * @param {Number} final_coins 
+ * @returns {Promise}
+ */
 const end_game_by_id = async (game_id, user_id, final_coins) => {
     return new Promise((resolve, reject) => {
         const sql = "UPDATE games SET score = ? WHERE game_id = ? AND user_id = ?;";
@@ -225,7 +288,12 @@ const end_game_by_id = async (game_id, user_id, final_coins) => {
 }
 
 
-
+/**
+ * [Validates the path selected accordingly to the game rules]
+ * @param {Number} game_id 
+ * @param {[Number]} path 
+ * @returns {Game} an object containing the final coins of the game and the randomly selected events associated to the path.
+ */
 export const validate_game = async (game_id, path) => {
     //check path lentgh >=5 (start, 2stations, 1end)
     if (path.length < 4) throw new HttpError(400, "Percorso troppo breve. Servono almeno 3 tratte totali.");
@@ -256,7 +324,7 @@ export const validate_game = async (game_id, path) => {
 
 
     // associate random events to single stations - event[i] <-> path[i]
-    const number_of_events = path.length-1;
+    const number_of_events = path.length - 1;
     const all_events = await list_events();
     const events_selected = get_n_random_events(all_events, number_of_events);
 
@@ -269,11 +337,15 @@ export const validate_game = async (game_id, path) => {
 
     await end_game_by_id(game_id, game_row.user_id, final_coins);
 
-    if(final_coins < 0) final_coins = 0;
+    if (final_coins < 0) final_coins = 0;
     return new Game(final_coins, events_selected);
 };
 
 
+/**
+ * [Gets the leaderboard from the `games` table]
+ * @returns an object containing the leaderboard of the games.
+ */
 export const get_leaderboard_per_user = async () => {
     return new Promise((resolve, reject) => {
         const sql = `
@@ -293,11 +365,3 @@ export const get_leaderboard_per_user = async () => {
         });
     });
 }
-
-
-// try{
-//     const leaderboard = await get_leaderboard_per_user();
-//     console.log(leaderboard.is_empty());
-// }catch(err){
-//     console.error(err);
-// }

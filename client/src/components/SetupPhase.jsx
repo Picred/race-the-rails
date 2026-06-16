@@ -20,7 +20,7 @@ export const SetupPhase = (props) => {
     return (
         <Stack direction="vertical" gap={2} className="align-items-center">
             <h3 className="fw-bold text-warning">Fase di Setup</h3>
-            <Image src="/routes_lines.svg" className="border" fluid />
+            <Image src="/routes_lines.svg" className="border" fluid/>
             <Button className="btn btn-warning" onClick={handle_button_click}>Sono pronto!</Button>
         </Stack>
     )

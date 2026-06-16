@@ -7,13 +7,15 @@ import { useNavigate } from "react-router";
  */
 export const NotFoundPage = () => {
     const navigate = useNavigate();
-    
+
     return (
         <Stack direction="vertical" className="h-100 justify-content-center align-items-center fw-bold" gap={3}>
-        <h1>404 Not Found</h1>
-        <Button className="btn btn-warning fs-5" onClick={() => navigate("/")}>
-            <HomeIcon/>
-        </Button>
+            <p className="display-3 text-body fw-bold">404</p>
+            <h3 className="text-body fw-bold">Pagina richiesta non trovata</h3>
+            
+            <Button className="btn btn-danger btn-lg fs-5 fw-bold fst-italic p-3" onClick={() => navigate("/")}>
+                <HomeIcon />
+            </Button>
         </Stack>
     )
 }

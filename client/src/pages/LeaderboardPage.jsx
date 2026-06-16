@@ -10,7 +10,9 @@ import { useNavigate } from "react-router";
 export const LeaderboardPage = () => {
     const [error_feedback, set_error_feedback] = useState();
     const [leaderboard_entries, set_leaderboard_entries] = useState([]);
+
     const navigate = useNavigate();
+
     useEffect(() => {
         const get_leaderboard = async () => {
             const response = await GAME_API.get_leaderboard();
@@ -23,13 +25,11 @@ export const LeaderboardPage = () => {
             }
         }
         get_leaderboard();
-        // if (error_feedback) console.log(error_feedback);
-        // if (leaderboard_entries) console.log(leaderboard_entries);
     }, [])
 
     return (<>
         <Stack direction="vertical" className="align-items-center justify-content-center h-100" gap={5}>
-            <p className="border display-4 mt-2 p-4 rounded bg-dark fw-bold">{error_feedback ? "E' avvenuto un errore" : "LEADERBOARD"}</p>
+            <p className="border display-4 mt-2 p-4 rounded bg-dark fw-bold">{error_feedback ? "E' avvenuto un errore" : "Classifica Generale"}</p>
 
             {!error_feedback &&
                 <Table striped bordered hover responsive className="fs-5 text-center">
@@ -59,7 +59,6 @@ export const LeaderboardPage = () => {
 
             
         </Stack>
-
     </>
     );
 }

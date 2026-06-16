@@ -10,7 +10,6 @@ export const GameplayPhase = (props) => {
     const current_event = props.game_results?.events[current_step];
 
     useEffect(() => {
-        // if (!current_route_id || !current_event) return;
         if (!current_event) return;
 
         const timer = setTimeout(() => {
@@ -20,10 +19,10 @@ export const GameplayPhase = (props) => {
             if (current_step < props.current_path.length) {
                 set_current_step(prev_step => prev_step + 1);
             }
-        }, 5000);
+        }, 3000);
 
         return () => clearTimeout(timer);
-    }, [current_step, current_event, props.set_current_phase]);
+    }, [current_step, current_event]);
 
 
     return (<>
@@ -49,7 +48,7 @@ export const GameplayPhase = (props) => {
                 )}
             </Container>
 
-            <Button className="btn btn-warning" onClick={() => props.set_current_phase("RESULTS")}>Vai ai risultati</Button>
+            <Button className="btn btn-warning" disabled={current_event} onClick={() => props.set_current_phase(props.phases.RESULTS)}>Vai ai risultati</Button>
         </Stack>
 
     </>)

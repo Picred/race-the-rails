@@ -6,6 +6,12 @@ import { Button } from "react-bootstrap";
  * @returns the results of the game just ended.
  */
 export const ResultsPhase = (props) => {
+
+    const handle_new_game_click = () => {
+        props.set_current_phase(props.phases.SETUP);
+        props.handle_reset_game();
+    }
+
     return (
         <>
             <div className="text-center mt-5 text-white">
@@ -28,13 +34,13 @@ export const ResultsPhase = (props) => {
                     </>
                 )}
 
-                    <Button
-                        className="btn btn-warning btn-lg"
-                        onClick={() => props.set_current_phase("SETUP")}
-                    >
-                        Nuova Partita
-                    </Button>
-                </div>
+                <Button
+                    className="btn btn-warning btn-lg"
+                    onClick={handle_new_game_click}
+                >
+                    Nuova Partita
+                </Button>
+            </div>
         </>
     )
 }

@@ -176,32 +176,27 @@ Response body: A JSON object containing the leaderbord (if exists) or object wit
 
 ## Main React Components
 
+- `Layout` (in `Layout.jsx`): used for the rendering of the default layout used by other components
 - `Homepage` (in `Homepage.jsx`): used for anonymous users in order to allow the login phase.
-- `GameplayPage` (in `GameplayPage.jsx`): contains the main logic which contains shared status of the entire gameplay.
+- `GameplayPage` (in `GameplayPage.jsx`): contains the main logic which contains shared status of the entire gameplay. It is used to render child components for each game phase (`SetupPhase`, `PlanningPhase`, `GameplayPhase`, `ResultsPhase`, )
 - `LeaderboardPage` (in `LeaderboardPage.jsx`): Contains the leaderboard.
 - `LoginPage` (in `LoginPage.jsx`): contains a form which allow anonymous users to log in. 
-- `Layout` (in `Layout.jsx`): used for the rendering of the default layout used by other components
 - `Sidebar` (in `Sidebar.jsx`): contains the button which shows game rules and leaderboard.
-- `SetupPhase` (in `SetupPhase.jsx`): contains the map of the network with lines. It requires the initial data from the server required for the setup phase of the game.
-- `PlanningPhase` (in `PlanningPhase.jsx`): contains the map of the network without the lines, the assigned start/end stations, a visible timer and all the pairs of connected stations.
-- `GameplayPhase` (in `GameplayPhase.jsx`): contains the selected path by the user as pairs and the effects applied to the total amount of coins.
-- `ResultsPhase` (in `ResultsPhase.jsx`): contains the final result of the game or the error returned by the server, if any.
 
 
-- ...
 
-(only _main_ components, minor ones may be skipped)
 
 ## Screenshot
 
-![Screenshot](./img/screenshot.jpg)
+![Planning](./img/planning-phase.png)
+![Classifica](./img/leaderboard-page.png)
 
 ## Users Credentials
 
-- andrei.stefan@polito.it, andreipsw TODO(plus any other requested info)
-- claudia.romano@polito.it, claudiapsw TODO(plus any other requested info)
-- alice.russo@polito.it, alicepsw TODO(plus any other requested info)
-- antonella.ferrari@polito.it, antonellapsw TODO(plus any other requested info)
+- andrei.stefan@polito.it, andreipsw (played some games successfully)
+- claudia.romano@polito.it, claudiapsw (played some games successfully)
+- alice.russo@polito.it, alicepsw (played some games successfully)
+- antonella.ferrari@polito.it, antonellapsw (no games played)
 
 ## Use of AI Tools
-I didn't used AI tools.
+I didn't use AI tools.

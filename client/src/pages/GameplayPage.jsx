@@ -16,10 +16,9 @@ const PHASES = {
 
 /**
  * [Renders all the 4 phases of the game based on its internal states (Setup, Planning, Gameplay, Results).]
- * @param {Object} props 
  * @returns the gameplay of the game based on its state. 
  */
-export const GameplayPage = (props) => {
+export const GameplayPage = () => {
     const [current_phase, set_current_phase] = useState(PHASES.SETUP);
     const [current_path, set_current_path] = useState([]); // ["Linea Arancione 3-7"]
     const [timer, set_timer] = useState(90);
@@ -27,13 +26,13 @@ export const GameplayPage = (props) => {
     const [game_id, set_game_id] = useState();
     const [game_results, set_game_results] = useState();
 
-    const [error_feedback, set_error_feedback] = useState();
+    const [error_feedback, set_error_feedback] = useState("");
 
-    const [random_start_station_id, set_random_start_station_id] = useState();
-    const [random_end_station_id, set_random_end_station_id] = useState();
+    const [random_start_station_id, set_random_start_station_id] = useState(undefined);
+    const [random_end_station_id, set_random_end_station_id] = useState(undefined);
 
     const [all_routes, set_all_routes] = useState(undefined);
-    const [all_stations, set_all_stations] = useState();
+    const [all_stations, set_all_stations] = useState(undefined);
 
 
 
@@ -54,25 +53,20 @@ export const GameplayPage = (props) => {
         get_all_routes();
         get_all_stations();
 
+    }, [current_phase])
 
+
+    const handle_reset_game = () => {
         set_timer(90);
         set_game_id(undefined);
         set_error_feedback("");
         set_random_end_station_id(undefined);
         set_random_start_station_id(undefined);
         set_current_path([]);
-    }, [current_phase])
-
-
+        set_game_results(undefined);
+    }
 
     const handle_send_current_path = async () => {
-        // if (!current_path || current_path.length === 0) {
-        //     set_error_feedback("Nessuna tratta selezionata. Il viaggio è incompleto.");
-        //     set_game_results({ final_coins: 0, events: [] }); // totale finale 0
-        //     set_current_phase(PHASES.RESULTS);
-        //     return;
-        // }
-
         const selected_path_ids = []
         for (let i = 0; i < current_path.length; i++) {
             // prendo le info sulla route
@@ -130,12 +124,10 @@ export const GameplayPage = (props) => {
 
             {current_phase === PHASES.GAMEPLAY &&
                 <GameplayPhase game_results={game_results}
-                    set_current_phase={set_current_phase}
                     current_path={current_path}
                     all_routes={all_routes}
                     set_current_phase={set_current_phase}
-
-
+                    phases={PHASES}
                 />
             }
 
@@ -144,6 +136,7 @@ export const GameplayPage = (props) => {
                     game_results={game_results}
                     phases={PHASES}
                     set_current_phase={set_current_phase}
+                    handle_reset_game={handle_reset_game}
                 />
             }
         </>

@@ -1,5 +1,5 @@
-import { useContext, useState } from "react";
-import { ButtonGroup, Col, Row, ToggleButton, ListGroup, Stack, Button } from "react-bootstrap";
+import { useContext } from "react";
+import { ListGroup, Stack, Button } from "react-bootstrap";
 import { Link, useNavigate } from "react-router";
 
 import { UserContext } from "../context/UserContext.js";
@@ -9,10 +9,9 @@ import { USER_API } from "../API/user_api.js";
 
 /**
  * [Renders a sidebar with Rules, Leaderboard and Logout(if logged in) buttons.]
- * @param {Object} props 
  * @returns a rendered sidebar.
  */
-export const Sidebar = (props) => {
+export const Sidebar = () => {
     const navigate = useNavigate();
     const { user, set_user } = useContext(UserContext);
 
@@ -26,28 +25,35 @@ export const Sidebar = (props) => {
     return (
         <ListGroup variant="flush" className="vh-100 border-end border-secondary bg-dark text-white">
 
-            <ListGroup.Item className="bg-body text-body border-secondary pt-4 text-center" action onClick={() => navigate("/")}>
+            <ListGroup.Item className="bg-body text-body border-secondary pt-4 text-center">
                 <Stack direction="horizontal" gap={1} className="justify-content-center align-items-center text-center">
                     <RailroadSign />
                     <p className="text-uppercase fs-3 fw-bold">Ultima Corsa</p>
                     <RailroadSign />
                 </Stack>
+
+                {/* {user && <Button className="btn text-body fw-bold" variant="outline-info">{user.username}</Button>} */}
             </ListGroup.Item>
 
             <ListGroup.Item className="bg-body text-body border-secondary fw-bold">
                 <Instructions />
             </ListGroup.Item>
 
-            {user ? 
+            {user ?
                 <ListGroup.Item className="bg-body text-body border-secondary fw-bold">
                     <Button className="btn-danger w-100 fs-5 fw-bold fst-italic p-2 m-1" onClick={() => navigate("/leaderboard")}>Classifica generale</Button>
-                    <Link onClick={(e) => handle_logout(e)}><LogoutIcon/></Link>
-                </ListGroup.Item> :
+
+                    <Stack direction="horizontal" gap={2} className="align-items-end justify-content-center">
+                        <Link onClick={(e) => handle_logout(e)}><LogoutIcon /></Link>
+                        <p className="text-body fw-bold text-break" variant="outline-info">{user.username}</p>
+                    </Stack>
+                </ListGroup.Item>
+                :
 
                 <ListGroup.Item className="bg-body text-body border-secondary fw-bold disabled">
                     <span className="btn btn-danger disabled w-100 fs-5 fw-bold fst-italic p-2 m-1">
                         Classifica generale
-                        <KeyIcon />
+                        <UserLockedIcon />
                     </span>
 
                 </ListGroup.Item>
@@ -69,10 +75,10 @@ const RailroadSign = () => {
 }
 
 /**
- * [Renders a Key icon]
- * @returns a Key icon
+ * [Renders a UserLocked icon]
+ * @returns a UserLocked icon
  */
-const KeyIcon = () => {
+const UserLockedIcon = () => {
     return (
         <i className="bi bi-person-lock"></i>
     );
@@ -84,6 +90,6 @@ const KeyIcon = () => {
  */
 const LogoutIcon = () => {
     return (
-        <i className="bi bi-box-arrow-left text-warning display-6 mt-2"></i>
+        <i className="bi bi-box-arrow-left text-warning fs-1 mt-2"></i>
     );
 }

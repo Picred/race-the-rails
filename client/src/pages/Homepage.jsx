@@ -1,16 +1,13 @@
-import { Button, Container, Stack } from "react-bootstrap";
+import { Stack } from "react-bootstrap";
 import { Link } from "react-router";
-import { useContext, useEffect } from "react";
-import { Instructions } from "../components/Instructions.jsx";
+import { useContext } from "react";
 import { UserContext } from "../context/UserContext.js";
-import { GameplayPage } from "./GameplayPage.jsx";
 
 /**
  * [Renders the Homepage of the application with the name and the Button for logging in or the Gameplay Page if logged in]
- * @param {Object} props 
- * @returns 
+ * @returns the rendered homepage
  */
-export const Homepage = (props) => {
+export const Homepage = () => {
     const { user } = useContext(UserContext);
 
 
@@ -18,10 +15,10 @@ export const Homepage = (props) => {
         <>
             {!user &&
                 <Stack direction="vertical" className="h-100 w-100 justify-content-center align-items-center" gap={4} >
-                    <h1 className="display-3 text-body fw-bold">
+                    <p className="display-3 text-body fw-bold">
                         <TrainIcon />
                         Ultima Corsa
-                    </h1>
+                    </p>
 
                     <Stack direction="horizontal" gap={2} className="justify-content-center">
                         <Link to="/login" className="btn btn-danger btn-lg fs-5 fw-bold fst-italic p-3">

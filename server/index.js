@@ -69,9 +69,7 @@ server.post("/api/sessions", passport.authenticate("local"), async (req, res) =>
     try {
         return res.status(201).json({username: req.user.username});
     } catch (err) {
-        console.error("Error while fetching routes: " + err);
         res.status(500).end();
-        // res.status(500).json({error: "Error while fetching routes:" + err})
     }
 }); 
 
@@ -146,7 +144,6 @@ server.get("/api/routes", is_logged_in, async (req, res) => {
 server.get("/api/leaderboard", is_logged_in, async (req, res) => {
     try{
         const leaderboard = await get_leaderboard_per_user();
-        // console.log(leaderboard);
         return res.json(leaderboard);
 
     }catch(err){

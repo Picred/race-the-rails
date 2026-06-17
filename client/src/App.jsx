@@ -1,15 +1,12 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Route, Routes, Navigate } from "react-router";
 
-import { GAME_API } from "./API/game_api.js";
-import { USER_API } from "./API/user_api.js";
 import { UserContext } from "./context/UserContext.js";
 
 import { Layout } from "./components/Layout.jsx";
-import { Instructions } from "./components/Instructions.jsx";
 import { Homepage } from "./pages/Homepage.jsx";
 import { LeaderboardPage } from "./pages/LeaderboardPage.jsx";
 import { NotFoundPage } from "./pages/NotFoundPage.jsx";

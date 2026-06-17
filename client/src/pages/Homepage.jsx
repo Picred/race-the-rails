@@ -3,6 +3,7 @@ import { Link } from "react-router";
 import { useContext } from "react";
 import { UserContext } from "../context/UserContext.js";
 
+
 /**
  * [Renders the Homepage of the application with the name and the Button for logging in or the Gameplay Page if logged in]
  * @returns the rendered homepage
@@ -40,6 +41,7 @@ export const Homepage = () => {
 export const TrainIcon = () => {
     return <i className="bi bi-train-front me-3 text-danger"></i>;
 }
+
 
 /**
  * [Renders a Person icon]

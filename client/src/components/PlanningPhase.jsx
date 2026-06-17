@@ -1,7 +1,7 @@
 import { useEffect } from "react"
 import { Container, Button, Stack, Image } from "react-bootstrap";
-import { GAME_API } from "../API/game_api.js";
 import { get_station_name_by_id } from "../utils/utils.js";
+
 
 /**
  * [Renders the map without the lines, start/end stations and a timer]
@@ -14,12 +14,9 @@ export const PlanningPhase = (props) => {
 
     useEffect(() => {
         const interval_handle = setInterval(() => {
-            
-            props.set_timer((old_timer) => {
+            props.set_timer(old_timer => {
                 if (old_timer <= 1) {
                     clearInterval(interval_handle);
-
-                    // props.handle_send_current_path();
                     return 0;
                 }
                 return old_timer - 1;
@@ -27,14 +24,13 @@ export const PlanningPhase = (props) => {
         }, 1000);
 
         return () => clearInterval(interval_handle);
-    }, []);
+    }, [props.set_timer]);
 
 
     useEffect(() => {
-        if (props.timer === 0){
+        if (props.timer === 0)
             props.handle_send_current_path();
-        }
-    },[props.timer])
+    }, [props.timer, props.handle_send_current_path])
 
 
     const handle_path_selection = (route_id) => {
@@ -52,11 +48,13 @@ export const PlanningPhase = (props) => {
                 <h3 className="fw-bold text-warning">Fase di Pianificazione</h3>
                 <Image src="/routes_no_lines.svg" className="border" fluid />
 
+
                 <Stack direction="horizontal" gap={2} className="px-3 m-2 align-items-center justify-content-between border">
                     <p className="fs-3 fw-bold text-danger">PARTENZA: {random_start_station?.station_name || "Caricamento..."}</p>
                     <p className="fs-3 fw-bold text-warning">TEMPO RIMANENTE: {props.timer}</p>
                     <p className="fs-3 fw-bold text-danger">ARRIVO: {random_end_station?.station_name || "Caricamento..."}</p>
                 </Stack>
+
 
                 <Container fluid className="fs-5 fw-bold text-warning my-2">
                     PERCORSO SELEZIONATO:{" "}
@@ -76,34 +74,30 @@ export const PlanningPhase = (props) => {
                 </Container>
 
 
-
                 <Stack direction="horizontal" className="flex-wrap gap-2 justify-content-center p-3 border rounded bg-dark">
-                    {
-                        props.all_routes?.map((route) => {
-                            const is_selected = props.current_path?.includes(route.route_id);
+                    {props.all_routes?.map((route) => {
+                        const is_selected = props.current_path?.includes(route.route_id);
 
-                            return (
-                                <Button
-                                    key={route.route_id}
-                                    variant="outline-info"
-                                    className="fw-bold"
-                                    disabled={is_selected}
-                                    onClick={() => handle_path_selection(route.route_id)}
-                                >
-                                    {route.from_station_name} - {route.to_station_name}
-                                </Button>
-                            )
-                        })
+                        return (
+                            <Button
+                                key={route.route_id}
+                                variant="outline-info"
+                                className="fw-bold"
+                                disabled={is_selected}
+                                onClick={() => handle_path_selection(route.route_id)}
+                            >
+                                {route.from_station_name} - {route.to_station_name}
+                            </Button>
+                        )
+                    })
                     }
                 </Stack>
 
 
                 <Stack direction="horizontal" className="justify-content-center " gap={3}>
-
-                <Button className="btn btn-danger" onClick={handle_reset_path}>Ricomincia</Button>
-                <Button className="btn btn-warning" onClick={props.handle_send_current_path}>Invia percorso</Button>
+                    <Button className="btn btn-danger" onClick={handle_reset_path}>Ricomincia</Button>
+                    <Button className="btn btn-warning" onClick={props.handle_send_current_path}>Invia percorso</Button>
                 </Stack>
-
 
 
             </Stack>

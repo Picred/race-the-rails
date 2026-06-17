@@ -13,13 +13,16 @@ GET http://localhost:3001/api/sessions/current
 ###
 
 
+# Delete current session
+DELETE http://localhost:3001/api/sessions/current
+###
+
+
 # Get routes
 GET http://localhost:3001/api/routes
 ###
 
-# Delete current session
-DELETE http://localhost:3001/api/sessions/current
-###
+
 
 # Create new game
 POST http://localhost:3001/api/games
@@ -28,11 +31,11 @@ POST http://localhost:3001/api/games
 
 
 # Validate game/selected path.
-POST http://localhost:3001/api/games/1/validate
+POST http://localhost:3001/api/games/221/validate
 Content-Type: application/json
 
 {
-  "path": [9]
+  "path": [9,3,3,3]
 }
 ###
 

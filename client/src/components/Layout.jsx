@@ -2,6 +2,7 @@ import { Outlet } from "react-router";
 import { Sidebar } from "./Sidebar.jsx";
 import { Col, Container, Row } from "react-bootstrap";
 
+
 /**
  * [Renders the sidebar and the execution of the game]
  * @returns a Container containing the Sidebar visible for the entire user experience and the main content of the game.
@@ -20,5 +21,4 @@ export const Layout = () => {
             </Row>
         </Container>
     )
-
 }

@@ -2,8 +2,8 @@ const BASE_URL = "http://localhost:3001/api";
 
 
 /**
- * [Log in the account]
- * @param {Object} credentials 
+ * [Log in the user]
+ * @param {{username: string, password: string}} credentials 
  * @returns the username of the user.
  */
 const login = async (credentials) => {
@@ -25,7 +25,7 @@ const login = async (credentials) => {
             return { error: error_message };
 
         }
-    } catch (err) {
+    } catch {
         return { error: "Errore di connessione con il server" };
 
     }

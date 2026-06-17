@@ -1,6 +1,7 @@
 import { Stack, Image, Button } from "react-bootstrap"
 import { GAME_API } from "../API/game_api.js"
 
+
 /**
  * [Renders the map and the start button of the game.]
  * @param {Object} props 

@@ -32,7 +32,6 @@ export const Sidebar = () => {
                     <RailroadSign />
                 </Stack>
 
-                {/* {user && <Button className="btn text-body fw-bold" variant="outline-info">{user.username}</Button>} */}
             </ListGroup.Item>
 
             <ListGroup.Item className="bg-body text-body border-secondary fw-bold">

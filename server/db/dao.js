@@ -178,7 +178,7 @@ const calculate_distances_from_station = (all_routes, random_start_route_step) =
 
 /**
  * [Generates a random and valid end route step]
- * @param {[Object]} all_routes 
+ * @param {[Route]} all_routes 
  * @param {Object} random_start_route_step 
  * @returns a randomly selected end route step.
  */
@@ -298,17 +298,17 @@ export const validate_game = async (game_id, path) => {
     //check path lentgh >=5 (start, 2stations, 1end)
     if (path.length < 4) throw new HttpError(400, "Percorso troppo breve. Servono almeno 3 tratte totali.");
 
+
     // check game_id
     const actual_time = dayjs();
     const game_row = await get_game_by_id(game_id);
     if (!game_row) throw new HttpError(404, "Partita non trovata!");
 
+
     const start_time = dayjs(game_row.start_time);
     const time_shift_seconds = calculate_timeshift_seconds(start_time, actual_time);
-    if (time_shift_seconds > 90) throw new HttpError(408, "Tempo scaduto!"); // TODO: to uncomment in prod
+    if (time_shift_seconds > 90) throw new HttpError(408, "Tempo scaduto!");
 
-    // TODO: DEBUG
-    // if (!time_shift_seconds > 90) throw new HttpError(408, "Tempo scaduto!");
 
     // check start/end stations
     const start_station_id = Number(game_row.start_station_id);
@@ -333,8 +333,6 @@ export const validate_game = async (game_id, path) => {
     final_coins += START_COINS;
 
 
-    // insert new data in db if is higher than older score
-
     await end_game_by_id(game_id, game_row.user_id, final_coins);
 
     if (final_coins < 0) final_coins = 0;
@@ -343,7 +341,7 @@ export const validate_game = async (game_id, path) => {
 
 
 /**
- * [Gets the leaderboard from the `games` table]
+ * [Gets the leaderboard from the `games` table grouped by user_id]
  * @returns an object containing the leaderboard of the games.
  */
 export const get_leaderboard_per_user = async () => {
@@ -359,9 +357,7 @@ export const get_leaderboard_per_user = async () => {
 
         db.all(sql, [], (err, rows) => {
             if (err) reject(err);
-            else {
-                resolve(new Leaderboard(rows));
-            }
+            else resolve(new Leaderboard(rows));
         });
     });
 }

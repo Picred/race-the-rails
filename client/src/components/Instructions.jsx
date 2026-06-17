@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { Button, Modal, ListGroup, Stack } from "react-bootstrap";
 
+
 /**
  * [Renders the rules of the game]
- * @param {Object} props 
  * @returns a Modal component with the rules of the game.
  */
-export const Instructions = (props) => {
+export const Instructions = () => {
     const [show_instrutions, set_show_instructions] = useState(false);
 
     const handle_close_instructions = () => set_show_instructions(false);
@@ -27,34 +27,47 @@ export const Instructions = (props) => {
                 <Modal.Body>
                     <ListGroup>
                         <ListGroup.Item>
-                            <span className="fw-bold text-warning">Obiettivo</span>: Raggiungere la destinazione con più monete possibili partendo da 20. Il gioco si divide in varie fasi:
-                        </ListGroup.Item>
-
-                        <ListGroup.Item>
-                            <span className="fw-bold text-danger">1. Setup</span>:
-                            Studia le linee nella mappa e le loro connessioni prima di partire.
+                            <span className="fw-bold text-warning">Obiettivo</span>
+                            <span>
+                                : Raggiungere la destinazione con più monete possibili partendo da 20. Il gioco si divide in varie fasi:
+                            </span>
                         </ListGroup.Item>
 
 
                         <ListGroup.Item>
-                            <span className="fw-bold text-warning">2. Pianificazione</span>:
-                            Ricevi due stazioni (partenza e arrivo) casuali distanti almeno 3 tratte tra loro.
+                            <span className="fw-bold text-danger">1. Setup</span>
+                            <span>
+                                : Studia le linee nella mappa e le loro connessioni prima di partire.
+                            </span>
+                        </ListGroup.Item>
+
+
+                        <ListGroup.Item>
+                            <span className="fw-bold text-warning">2. Pianificazione</span>
+                            <span>
+                                : Ricevi due stazioni (partenza e arrivo) casuali distanti almeno 3 tratte tra loro.
+                            </span>
                         </ListGroup.Item>
 
                         <ListGroup.Item>
-                            <span className="fw-bold text-danger">3. Timer (90s)</span>:
-                            Hai 90 secondi per costruire la migliore tratta in sequenza. Se il tempo scade, il percorso si invia automaticamente.
+                            <span className="fw-bold text-danger">3. Timer</span>
+                            <span>
+                                : Hai 90 secondi per costruire la migliore tratta in sequenza. Se il tempo scade, il percorso si invia automaticamente.
+                            </span>
                         </ListGroup.Item>
 
                         <ListGroup.Item>
-                            <span className="fw-bold text-warning">4. Vincoli</span>:
-                            Puoi cambiare linea solo nelle stazioni di interscambio.
-                            Ogni tratta è monouso.
+                            <span className="fw-bold text-warning">4. Vincoli</span>
+                            <span>
+                                : Puoi cambiare linea solo nelle stazioni di interscambio. Ogni tratta è monouso.
+                            </span>
                         </ListGroup.Item>
 
                         <ListGroup.Item>
-                            <span className="fw-bold text-danger">5. Viaggio</span>:
-                            Se il percorso pianificato è valido, ogni tappa attiva un evento casuale da <span className="fw-bold text-danger">-4 a +4 monete</span>. Se è errato, totalizzi <span className="fw-bold text-danger">0</span>.
+                            <span className="fw-bold text-danger">5. Viaggio</span>
+                            <span>
+                                : Se il percorso pianificato è valido, ogni tappa attiva un evento casuale da <span className="fw-bold text-danger">-4 a +4 monete</span>. Se è errato, totalizzi <span className="fw-bold text-danger">0</span>.
+                            </span>
                         </ListGroup.Item>
                     </ListGroup>
                 </Modal.Body>

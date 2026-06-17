@@ -9,7 +9,7 @@ const list_routes = async () => {
     try {
         const response = await fetch(`${BASE_URL}/routes`, {
             credentials: "include"
-        }); // TODO: includere cookie / credentials: true
+        });
 
         if (response.ok) {
             const routes = await response.json();
@@ -18,7 +18,7 @@ const list_routes = async () => {
         else {
             return { error: "Rotte assenti" };
         }
-    } catch (err) {
+    } catch {
         return ({ error: "Errore di connessione con il server" });
     }
 }
@@ -41,10 +41,11 @@ const list_stations = async () => {
         else {
             return { error: "Stazioni assenti" };
         }
-    } catch (err) {
+    } catch {
         return ({ error: "Errore di connessione con il server" });
     }
 }
+
 
 /**
  * [Creates the game row in the database with the current time.]
@@ -64,10 +65,11 @@ const create_new_game = async () => {
         else {
             return { error: "Dati di gioco assenti" };
         }
-    } catch (err) {
+    } catch {
         return ({ error: "Errore di connessione con il server" });
     }
 }
+
 
 /**
  * [Sends the path selected to the server for validation]
@@ -98,6 +100,7 @@ const send_current_path = async (current_path, game_id) => {
         return { message: err };
     }
 }
+
 
 /**
  * [Request the updated leaderboard from the server.]

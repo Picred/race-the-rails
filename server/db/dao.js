@@ -332,10 +332,11 @@ export const validate_game = async (game_id, path) => {
     let final_coins = calculate_final_coins(events_selected);
     final_coins += START_COINS;
 
-
-    await end_game_by_id(game_id, game_row.user_id, final_coins);
+    
 
     if (final_coins < 0) final_coins = 0;
+    await end_game_by_id(game_id, game_row.user_id, final_coins);
+
     return new Game(final_coins, events_selected);
 };
 

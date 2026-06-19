@@ -192,4 +192,6 @@ Response body: A JSON object containing the leaderbord (if exists) or object wit
 
 
 ## Use of AI Tools
-I didn't use AI tools.
+I used Google Gemini PRO for brainstorming about:
+- distance calculation algorithm between 2 stations in a graph.
+- conceptual UI and colors.

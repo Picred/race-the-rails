@@ -31,6 +31,7 @@ export const LoginPage = () => {
         // login tramite API
         if (user_data.error) {
             set_notification(user_data.error)
+            set_is_loading(false);
             return;
         }
 

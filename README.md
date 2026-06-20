@@ -1,10 +1,14 @@
 [![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/iZes9Qfg)
+
 # Exam #1: "Ultima Corsa"
+
 ## Student: S356980 STEFAN ANDREI DANIEL 
+
+
 
 ## React Client Application Routes
 
-- Route `/`: it contains the title of the game and the a button used for the navigation to the login page. When logged, user plays the game on this route.
+- Route `/`: it contains the title of the game and the a button used for the navigation to the login page. When logged in, user plays the game on this route.
 - Route `/login`: it contains the login form used to create the session.
 - Route `/leaderboard`: it contains a table which shows the best scores of all registered users who successfully played some games.
 - Route `*`: it contains the 404 Not Found error, if a non-specified route is requested.
@@ -32,6 +36,7 @@ Response body: A JSON object containing the username.
     "username": "andrei.stefan@polito.it"
   }
   ```
+
 
 
 ### Check if still logged in
@@ -105,6 +110,7 @@ Response body: A JSON object containing the list of the routes.
   ```
 
 
+
 ### Start the game and get game information
 [POST] `/api/games` - Create a new game.
 
@@ -150,6 +156,7 @@ Response body: A JSON object containing the list associated events and final coi
   ```
 
 
+
 ### Get the leaderboard
 [POST] `/api/leaderboard` - Retrieve the leaderboard with top scores of users.
 
@@ -177,38 +184,45 @@ Response body: A JSON object containing the leaderbord (if exists) or object wit
 
 ## Database Tables
 
-- Table `events` - contains the list of all possible events with their effect.
+- Table `events` - contains the list of all possible events with their effect:
+  - columns: `event_id, description, effect`
 - Table `games` - contains the history of all games (score, start time, start/end stations) by any user who starts a game.
+  - columns: `game_id, user_id, score, start_time, start_station_id, end_station_id`
 - Table `routes` - contains default routes with line name, station id and a stop sequence in a specific line.
+  - columns: `route_id, line_name, station_id, stop_sequence`
 - Table `stations` - contains the list of all available stations. 
+  - columns: `station_id, station_name`
 - Table `users` - contains the list of registered users and their credentials.
+  - columns: `user_id, username, password, salt`
 
 
 
 ## Main React Components
 
-- `Layout` (in `Layout.jsx`): used for the rendering of the default layout used by other components
-- `Homepage` (in `Homepage.jsx`): used for anonymous users in order to allow the login phase.
-- `GameplayPage` (in `GameplayPage.jsx`): contains the main logic which contains shared status of the entire gameplay. It is used to render child components for each game phase (`SetupPhase`, `PlanningPhase`, `GameplayPhase`, `ResultsPhase`, )
-- `LeaderboardPage` (in `LeaderboardPage.jsx`): Contains the leaderboard.
-- `LoginPage` (in `LoginPage.jsx`): contains a form which allow anonymous users to log in. 
-- `Sidebar` (in `Sidebar.jsx`): contains the button which shows game rules and leaderboard.
+- `Layout` (in `Layout.jsx`): used for the rendering of the default layout used by any other components
+- `Homepage` (in `Homepage.jsx`): used for anonymous users in order to allow the login phase. It has the game title and a button which redirects to the login page.
+- `LoginPage` (in `LoginPage.jsx`): contains a form which allow anonymous users to log in.
+- `GameplayPage` (in `GameplayPage.jsx`): contains the main logic. It has got a global status of the entire gameplay. It is used to render child components for each game phase (`SetupPhase[.jsx]`, `PlanningPhase[.jsx]`, `GameplayPhase[.jsx]`, `ResultsPhase[.jsx]`).
+- `LeaderboardPage` (in `LeaderboardPage.jsx`): Contains the leaderboard of the game.
+- `Sidebar` (in `Sidebar.jsx`): contains some buttons: show game rules, redirect to the leaderboard. When logged in, the logout button and username are rendered.
 
 
 
 ## Screenshot
 
-![Planning](./img/planning-phase.png)
-![Classifica](./img/leaderboard-page.png)
+During a game: ![Planning](./img/planning-phase.png)
+Leaderboard: ![Leaderboard](./img/leaderboard-page.png)
 
 
 
 ## Users Credentials
 
-- andrei.stefan@polito.it, andreipsw (played some games successfully)
-- claudia.romano@polito.it, claudiapsw (played some games successfully)
-- alice.russo@polito.it, alicepsw (played some games successfully)
-- antonella.ferrari@polito.it, antonellapsw (no games played)
+| username | password | description |
+| -------- | -------- | ---- |
+| andrei.stefan@polito.it | andreipsw | played some games successfully |
+| alice.russo@polito.it | alicepsw | played some games successfully |
+| claudia.romano@polito.it | claudiapsw | played one game successfully |
+| antonella.ferrari@polito.it | antonellapsw | no games played |
 
 
 

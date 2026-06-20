@@ -18,6 +18,11 @@ DELETE http://localhost:3001/api/sessions/current
 ###
 
 
+# Get stations
+GET http://localhost:3001/api/stations
+###
+
+
 # Get routes
 GET http://localhost:3001/api/routes
 ###

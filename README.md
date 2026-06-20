@@ -56,6 +56,27 @@ Response: `200 OK` (success).
 
 
 
+### List all the stations
+[GET] `/api/stations` - List all the stations.
+
+Response: `200 OK` (success), `500 Internal Server Error` (failure), `401 Unauthorized` (user not logged in)
+
+Response body: A JSON object containing the list of the stations.
+  ```json
+  [
+    {
+      "station_id": 1,
+      "station_name": "Fontana"
+    },
+    {
+      "station_id": 2,
+      "station_name": "Nesima"
+    },
+  ]
+  ```
+
+
+
 ### List all the routes
 [GET] `/api/routes` - List all the routes.
 

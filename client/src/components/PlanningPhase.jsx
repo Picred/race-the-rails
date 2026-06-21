@@ -76,7 +76,8 @@ export const PlanningPhase = (props) => {
 
                 <Stack direction="horizontal" className="flex-wrap gap-2 justify-content-center p-3 border rounded bg-dark">
                     {props.all_routes?.map((route) => {
-                        const is_selected = props.current_path?.includes(route.route_id);
+                        const complement_route_id = `${route.line_name}-${route.to_station_id}-${route.from_station_id}`;
+                        const is_selected = props.current_path?.includes(route.route_id) || props.current_path?.includes(complement_route_id);
 
                         return (
                             <Button

@@ -72,13 +72,15 @@ export const GameplayPage = () => {
             // prendo le info sulla route
             const route_data = all_routes.find(route => route.route_id === current_path[i]);
 
-            if (route_data) //lultima stazione è la to_station_id nella route trovata.
-                selected_path_ids.push(route_data.from_station_id);
+            if (route_data) {
+                const last_added_station = selected_path_ids[selected_path_ids.length - 1];
+                // se è la prima, pusho from poi pusho from solo se è diversa dall'ultima aggiunta (salti non validi [2-3][5-1])
+                if (last_added_station === undefined || last_added_station !== route_data.from_station_id)
+                    selected_path_ids.push(route_data.from_station_id);
 
-            if (i === current_path.length - 1)
                 selected_path_ids.push(route_data.to_station_id);
+            }
         }
-
         // invio, anche vuoto se tempo scaduto
         const response = await GAME_API.send_current_path(selected_path_ids, game_id);
 

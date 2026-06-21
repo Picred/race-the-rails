@@ -94,3 +94,96 @@ export const calculate_final_coins = (selected_events) => {
     
     return final_coins;
 }
+
+
+/**
+ * [Gets all single steps between 2 stations (forward/backward)]
+ * @param {[Object]} all_routes 
+ * @returns {[Object]} an array containng all the couples of segments between stops.
+ */
+export const get_single_segments_from_routes = (all_routes) => {
+    let computed_segments = [];
+    for (let i = 0; i < all_routes.length - 1; i++) {
+        const current_stop = all_routes[i];
+        const next_stop = all_routes[i + 1];
+
+        //se la fermata successiva fa parte di un'altra linea, skip
+        if (current_stop.line_name === next_stop.line_name) {
+            computed_segments.push({
+                route_id: `${current_stop.line_name}-${current_stop.station_id}-${next_stop.station_id}`,
+                line_name: current_stop.line_name,
+                from_station_id: current_stop.station_id,
+                from_station_name: current_stop.station_name,
+                to_station_id: next_stop.station_id,
+                to_station_name: next_stop.station_name,
+            });
+
+            computed_segments.push({
+                route_id: `${current_stop.line_name}-${next_stop.station_id}-${current_stop.station_id}`,
+                line_name: current_stop.line_name,
+                from_station_id: next_stop.station_id,
+                from_station_name: next_stop.station_name,
+                to_station_id: current_stop.station_id,
+                to_station_name: current_stop.station_name,
+            });
+        }
+    }
+    return computed_segments;
+}
+
+
+/**
+ * [Calculate all the distances from a starting point]
+ * @param {[Object]} all_routes 
+ * @param {Object} random_start_route_step 
+ * @returns an array containing all the distances from `random_start_route_step` ordered by `station_id`.
+ */
+const calculate_distances_from_station = (all_routes, random_start_route_step) => {
+    const distances = [];
+    distances[random_start_route_step.station_id] = 0;
+
+    for (let pace = 0; pace < 5; pace++) {
+        for (let r1 of all_routes) {
+            for (let r2 of all_routes) {
+
+                // Se r1 e r2 sono sulla stessa linea e sono consecutive (+1 o -1 fermata)
+                if (r1.line_name === r2.line_name && Math.abs(r1.stop_sequence - r2.stop_sequence) === 1) {
+
+                    // r1 già calcolata (stessa linea, distanza 1), allora r2 è a distanza r1 + 1
+                    if (distances[r1.station_id] !== undefined) {
+                        const new_distance = distances[r1.station_id] + 1; // dalla sorgente
+
+                        // Se r2 non ancora scoperta o ho una strada piu corta
+                        if (distances[r2.station_id] === undefined || new_distance < distances[r2.station_id]) {
+                            distances[r2.station_id] = new_distance;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return distances;
+}
+
+
+/**
+ * [Generates a random and valid end route step]
+ * @param {[Route]} all_routes 
+ * @param {Object} random_start_route_step 
+ * @returns a randomly selected end route step.
+ */
+export const get_random_end_route_step = (all_routes, random_start_route_step) => {
+    const distances = calculate_distances_from_station(all_routes, random_start_route_step);
+
+    // distances[0] = undefined sempre, le station_id partono da 1!
+
+    const valid_end_stations = all_routes.filter((route) => {
+        const distance = distances[route.station_id];
+        return distance !== undefined && distance >= 3;
+    });
+
+    let random_index = Math.floor(Math.random() * valid_end_stations.length);
+
+    if (random_index === 0) random_index += 1;
+    return valid_end_stations[random_index];
+}

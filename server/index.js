@@ -13,9 +13,10 @@ import {
     list_stations,
     create_new_game, 
     validate_game,
-    get_leaderboard_per_user,
-    get_single_segments_from_routes
+    get_leaderboard_per_user
 } from "./db/dao.js";
+
+import { get_single_segments_from_routes } from "./utils/utils.js";
 
 const server = express();
 const port = 3001;

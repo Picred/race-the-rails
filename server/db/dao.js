@@ -14,7 +14,7 @@ import {
 
 const START_COINS = 20;
 
-const db = new sqlite.Database("./db/rails.sqlite", async (err) => {
+const db = new sqlite.Database("./db/rails.sqlite", (err) => {
     if (err) throw err;
     //   await db.get("PRAGMA foreign_keys = ON"); // di default la gestione attiva delle chiavi esterne non è abilitata. mi fa inserire ugualmente valori che non rispettano la FK
 });
@@ -61,7 +61,7 @@ export const list_events = async () => {
             else if (rows.length === 0) resolve([]);
             else {
                 const events = rows.map((row) => new Event(row.description, row.effect));
-                return resolve(events);
+                resolve(events);
             }
         });
     });
@@ -80,7 +80,7 @@ export const list_stations = async () => {
             else if (rows.length === 0) resolve([]);
             else {
                 const stations = rows.map((row) => new Station(row.station_id, row.station_name));
-                return resolve(stations);
+                resolve(stations);
             }
         });
     });
@@ -99,8 +99,7 @@ export const list_routes = async () => {
             else if (rows.length === 0) resolve([]);
             else {
                 const routes = rows.map((row) => new Route(row.route_id, row.line_name, row.station_id, row.station_name, row.stop_sequence));
-                return resolve(routes);
-
+                resolve(routes);
             }
         });
     });
@@ -202,7 +201,7 @@ const end_game_by_id = async (game_id, user_id, final_coins) => {
  * @returns {Game} an object containing the final coins of the game and the randomly selected events associated to the path.
  */
 export const validate_game = async (game_id, path) => {
-    //check path lentgh >=5 (start, 2stations, 1end)
+    //check path lentgh >=4 (1start, 2stations, 1end)
     if (path.length < 4) throw new HttpError(400, "Percorso troppo breve. Servono almeno 3 tratte totali.");
 
 
@@ -259,7 +258,7 @@ export const get_leaderboard_per_user = async () => {
             FROM games g
             JOIN users u ON g.user_id = u.user_id
             WHERE score IS NOT NULL
-            GROUP BY u.user_id
+            GROUP BY u.username
             ORDER BY g.score DESC;
         `;
 

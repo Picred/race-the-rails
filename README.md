@@ -2,9 +2,6 @@
 
 # Exam #1: "Ultima Corsa"
 
-## Student: S356980 STEFAN ANDREI DANIEL 
-
-
 
 ## React Client Application Routes
 
